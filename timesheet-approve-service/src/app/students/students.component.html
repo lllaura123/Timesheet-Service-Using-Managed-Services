@@ -1,0 +1,14 @@
+<table class="students">
+  <tr>
+    <th>Name</th>
+    <th>Username</th>
+    <th>Excel</th>
+    <th>Status</th>
+  </tr>
+  <tr *ngFor="let student of students">
+    <td> {{student.name}}</td>
+    <td>{{student.userName}}</td>
+    <td><a href="{{student.link}}">Download Excel</a></td>
+    <td><input type="checkbox"></td>
+  </tr>
+</table>
