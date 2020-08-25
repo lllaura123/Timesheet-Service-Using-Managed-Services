@@ -12,6 +12,6 @@ export class StudentService {
   constructor(private http: HttpClient) { }
 
   getStudents(): Observable<Student[]>{
-    return this.http.get<Student[]>('http://localhost:8084/api/checklist');
+    return this.http.get<Student[]>('http://localhost:8080/api/checklist');
   }
 }
