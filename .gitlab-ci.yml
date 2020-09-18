@@ -19,4 +19,4 @@ build-docker:
   stage: build-docker
   script:
     - echo "{\"auths\":{\"$INTERNAL_DOCKER_PUSH_REGISTRY\":{\"username\":\"$INTERNAL_DOCKER_PUSH_USER\",\"password\":\"$INTERNAL_DOCKER_PUSH_PASSWORD\"}}}" > /kaniko/.docker/config.json
-    - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile Dockerfile --destination ${INTERNAL_DOCKER_PUSH_REGISTRY}/exxeta/haukea/timesheet-frontend
+    - /kaniko/executor --context $CI_PROJECT_DIR/timesheet-approve-service/ --dockerfile Dockerfile --destination ${INTERNAL_DOCKER_PUSH_REGISTRY}/exxeta/haukea/timesheet-frontend
