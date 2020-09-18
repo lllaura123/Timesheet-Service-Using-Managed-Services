@@ -1,0 +1,25 @@
+variables:
+
+  APPLICATION_IMAGE_REGISTRY: docker.lej.eis.network
+  BASE_IMAGE_REGISTRY: docker.lej.eis.network
+
+  INTERNAL_DOCKER_PUSH_REGISTRY: docker-upload.lej.eis.network
+  INTERNAL_DOCKER_PUSH_USER: docker
+  INTERNAL_DOCKER_PUSH_PASSWORD: docker
+
+stages:
+  - build-docker
+
+build-docker:
+  image:
+    name: ${APPLICATION_IMAGE_REGISTRY}/kaniko-project/executor:debug
+    entrypoint: [""]
+  tags:
+    - intern
+  stage: build-docker
+  script:
+    - echo "{\"auths\":{\"$INTERNAL_DOCKER_PUSH_REGISTRY\":{\"username\":\"$INTERNAL_DOCKER_PUSH_USER\",\"password\":\"$INTERNAL_DOCKER_PUSH_PASSWORD\"}}}" > /kaniko/.docker/config.json
+    - >
+    /kaniko/executor --context .
+    --dockerfile Dockerfile
+    --destination ${INTERNAL_DOCKER_PUSH_REGISTRY}/exxeta/haukea/timesheet-frontend
