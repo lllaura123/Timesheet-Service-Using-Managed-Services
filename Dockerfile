@@ -1,7 +1,11 @@
-FROM docker.lej.eis.network/library/openjdk:8-jdk-alpine
-VOLUME /tmp
-ARG DEPENDENCY=target/dependency
-COPY ${DEPENDENCY}/BOOT-INF/lib /app/lib
-COPY ${DEPENDENCY}/META-INF /app/META-INF
-COPY ${DEPENDENCY}/BOOT-INF/classes /app
-ENTRYPOINT ["java","-cp","app:app/lib/*","com.exxeta.timesheetapproveservice.TimesheetApproveServiceApplication"]
+ARG DOCKER_PULL_URI=docker.lej.eis.network:443
+
+FROM $DOCKER_PULL_URI/library/openjdk:8-jdk
+
+ARG JAR_FILE
+
+COPY $JAR_FILE app.jar
+
+ENTRYPOINT ["java", "-jar", "/app.jar"]
+
+EXPOSE 8080/tcp

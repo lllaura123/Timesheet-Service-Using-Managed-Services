@@ -1,49 +1,7 @@
 variables:
+  DOCKER_IMAGE_NAME: exxeta/haukea/timesheet-approve
 
-  APPLICATION_IMAGE_REGISTRY: docker.lej.eis.network
-  BASE_IMAGE_REGISTRY: docker.lej.eis.network
-
-  INTERNAL_DOCKER_PUSH_REGISTRY: docker-upload.lej.eis.network
-  INTERNAL_DOCKER_PUSH_USER: docker
-  INTERNAL_DOCKER_PUSH_PASSWORD: docker
-
-stages:
-  - build-maven
-  - build-docker
-
-build-frontend:
-  image:
-    name: ${APPLICATION_IMAGE_REGISTRY}/kaniko-project/executor:debug
-    entrypoint: [""]
-  tags:
-    - intern
-  stage: build-docker
-  script:
-    - echo "{\"auths\":{\"$INTERNAL_DOCKER_PUSH_REGISTRY\":{\"username\":\"$INTERNAL_DOCKER_PUSH_USER\",\"password\":\"$INTERNAL_DOCKER_PUSH_PASSWORD\"}}}" > /kaniko/.docker/config.json
-    - /kaniko/executor --context $CI_PROJECT_DIR/timesheet-approve-service/ --dockerfile Dockerfile --destination ${INTERNAL_DOCKER_PUSH_REGISTRY}/exxeta/haukea/timesheet-frontend
-
-maven-build-backend:
-  before_script:
-   - ''
-  image: docker.lej.eis.network/library/maven:3.6
-  stage: build-maven
-  script:
-    - mvn clean install
-  artifacts:
-    paths:
-      - $CI_PROJECT_DIR/target/dependency/META-INF/
-      - $CI_PROJECT_DIR//target/dependency/BOOT-INF/lib/
-      - $CI_PROJECT_DIR/target/dependency/BOOT-INF/classes/
-
-docker-build-backend:
-  image:
-    name: ${APPLICATION_IMAGE_REGISTRY}/kaniko-project/executor:debug
-    entrypoint: [""]
-  tags:
-    - intern
-  stage: build-docker
-  script:
-    - echo "{\"auths\":{\"$INTERNAL_DOCKER_PUSH_REGISTRY\":{\"username\":\"$INTERNAL_DOCKER_PUSH_USER\",\"password\":\"$INTERNAL_DOCKER_PUSH_PASSWORD\"}}}" > /kaniko/.docker/config.json
-    - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile Dockerfile --destination ${INTERNAL_DOCKER_PUSH_REGISTRY}/exxeta/haukea/timesheet-backend
-  dependencies:
-    - maven-build-backend
+include:
+  - project: 'exxeta.platform.suite/cicd-services/cicd-templates'
+    ref: master
+    file: 'gitlab-ci/scs_gitlab-ci.yml'
