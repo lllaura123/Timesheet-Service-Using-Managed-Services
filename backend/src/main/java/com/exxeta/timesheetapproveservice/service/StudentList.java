@@ -39,7 +39,7 @@ public class StudentList {
                 "&sum=week" +
                 "&endDate=" + getLastDayOfLastMonth() +
                 "&commentfirstword=" +
-                "&sortBy=started" +
+                "&sortBy=created" +
                 "&startDate=" + getFirstDayOfLastMonth() +
                 "&filterid=" +
                 "&sortDir=ASC" +
