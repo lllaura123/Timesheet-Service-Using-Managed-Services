@@ -19,6 +19,6 @@ mvn install
 
 echo "docker build..."
 cd ..
-docker build --build-arg JAR_FILE=backend/target/*.jar --tag haukea/timesheet-approve .
+docker build --build-arg JAR_FILE=backend/target/*.jar --tag docker.lej.eis.network/haukea/timesheet-approve:latest .
 
 cd ${dir}
