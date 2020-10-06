@@ -1,15 +1,18 @@
+<div class="navigation">
+  <button class="arrow left" (click)="getLastMonth()"></button>
+  <h2>{{this.monthName}}</h2>
+  <button class="arrow right" (click)="getNextMonth()"></button>
+</div>
 <table class="students">
   <tr>
     <th>Name</th>
-    <th>Username</th>
-    <th>Month</th>
+    <th>UserName</th>
     <th>Excel</th>
     <th>Status</th>
   </tr>
   <tr *ngFor="let student of students">
     <td> {{student.name}}</td>
     <td>{{student.userName}}</td>
-    <td>{{student.year}}-{{student.month}}</td>
     <td><a href="{{student.link}}">Download Excel</a></td>
     <td><input type="checkbox"></td>
   </tr>
