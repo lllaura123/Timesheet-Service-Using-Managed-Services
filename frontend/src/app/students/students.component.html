@@ -5,15 +5,24 @@
 </div>
 <table class="students">
   <tr>
-    <th>Name</th>
+    <th>Vorname</th>
+    <th>Nachname</th>
     <th>UserName</th>
-    <th>Excel</th>
+    <th>Download</th>
+    <th>Open</th>
     <th>Status</th>
   </tr>
   <tr *ngFor="let student of students">
-    <td> {{student.name}}</td>
+    <td> {{student.firstName}}</td>
+    <td> {{student.lastName}}</td>
     <td>{{student.userName}}</td>
-    <td><a href="{{student.link}}">Download Excel</a></td>
+    <td>
+      <button (click)="createExcel(student)">Download Excel</button>
+    </td>
+    <td>
+      <button (click)="openExcel(student)">open</button>
+    </td>
     <td><input type="checkbox"></td>
   </tr>
 </table>
+

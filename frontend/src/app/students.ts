@@ -1,5 +1,7 @@
 export interface Student {
-  name: string;
+  firstName: string;
+  lastName: string;
   userName: string;
-  link: URL;
+  link: string;
+  filePath: string;
 }

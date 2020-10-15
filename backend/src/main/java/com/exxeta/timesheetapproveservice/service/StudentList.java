@@ -51,7 +51,7 @@ public class StudentList {
                 while ((row = bufferedReader.readLine()) != null) {
                     String[] data = row.split(",");
                     studentlist.add(
-                            new StudentEntry(data[0], data[1], getExcelLink(data[1], firstDayOfMonth))
+                            new StudentEntry(data[0], data[1], data[2], getExcelLink(data[2], firstDayOfMonth))
                     );
                 }
             } catch (IOException e) {
@@ -61,17 +61,17 @@ public class StudentList {
 
         } else {
             studentlist = (Arrays.asList(
-                    new StudentEntry("Jan Buchholz", "buchholj", getExcelLink("buchholj", firstDayOfMonth)),
-                    new StudentEntry("Marcus Endtmann", "endtmanm", getExcelLink("endtmanm", firstDayOfMonth)),
-                    new StudentEntry("Noemi Klimpel", "klimpeln", getExcelLink("klimpeln", firstDayOfMonth)),
-                    new StudentEntry("Gunilla Kollotzek", "kollotzg", getExcelLink("kollotzg", firstDayOfMonth)),
-                    new StudentEntry("Justin Kromlinger", "kromlinj", getExcelLink("kromlinj", firstDayOfMonth)),
-                    new StudentEntry("Adrian Kuhn", "kuhnadri", getExcelLink("kuhnadri", firstDayOfMonth)),
-                    new StudentEntry("Laura Link", "linkl", getExcelLink("linkl", firstDayOfMonth)),
-                    new StudentEntry("Malte Rielinger", "rielingm", getExcelLink("rielingm", firstDayOfMonth)),
-                    new StudentEntry("Elisaveta Sytenkova", "sytenkoe", getExcelLink("sytenkoe", firstDayOfMonth)),
-                    new StudentEntry("Henk van der Sloot", "sloothen", getExcelLink("sloothen", firstDayOfMonth)),
-                    new StudentEntry("Nils Wenzlitschke", "wenzlitn", getExcelLink("wenzlitn", firstDayOfMonth))
+                    new StudentEntry("Jan", "Buchholz", "buchholj", getExcelLink("buchholj", firstDayOfMonth)),
+                    new StudentEntry("Marcus", "Endtmann", "endtmanm", getExcelLink("endtmanm", firstDayOfMonth)),
+                    new StudentEntry("Noemi", "Klimpel", "klimpeln", getExcelLink("klimpeln", firstDayOfMonth)),
+                    new StudentEntry("Gunilla", "Kollotzek", "kollotzg", getExcelLink("kollotzg", firstDayOfMonth)),
+                    new StudentEntry("Justin", "Kromlinger", "kromlinj", getExcelLink("kromlinj", firstDayOfMonth)),
+                    new StudentEntry("Adrian", "Kuhn", "kuhnadri", getExcelLink("kuhnadri", firstDayOfMonth)),
+                    new StudentEntry("Laura", "Link", "linkl", getExcelLink("linkl", firstDayOfMonth)),
+                    new StudentEntry("Malte", "Rielinger", "rielingm", getExcelLink("rielingm", firstDayOfMonth)),
+                    new StudentEntry("Elisaveta", "Sytenkova", "sytenkoe", getExcelLink("sytenkoe", firstDayOfMonth)),
+                    new StudentEntry("Henk", "van_der_Sloot", "sloothen", getExcelLink("sloothen", firstDayOfMonth)),
+                    new StudentEntry("Nils", "Wenzlitschke", "wenzlitn", getExcelLink("wenzlitn", firstDayOfMonth))
             ));
             return studentlist;
         }
