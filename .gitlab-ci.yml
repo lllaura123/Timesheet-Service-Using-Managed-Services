@@ -3,5 +3,5 @@ variables:
 
 include:
   - project: 'exxeta.platform.suite/cicd-services/cicd-templates'
-    ref: master
+    ref: v1
     file: 'gitlab-ci/scs_gitlab-ci.yml'
