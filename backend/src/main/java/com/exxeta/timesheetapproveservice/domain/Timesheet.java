@@ -1,0 +1,16 @@
+package com.exxeta.timesheetapproveservice.domain;
+
+import lombok.Data;
+
+@Data
+public class Timesheet {
+    private final Student student;
+    private final int year;
+    private final int month;
+    boolean fileExists;
+
+    public String getFileName() {
+        return "Timesheet_" + student.getLastName() + "_" + (month > 9 ? month : "0" + month) + "-" + year + ".xls";
+    }
+
+}

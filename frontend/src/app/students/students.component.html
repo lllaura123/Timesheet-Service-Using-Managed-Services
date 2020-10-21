@@ -20,7 +20,7 @@
       <button (click)="createExcel(student)">Download Excel</button>
     </td>
     <td>
-      <button (click)="openExcel(student)">open</button>
+      <button [disabled]="!student.fileExists" (click)="openExcel(student)">open</button>
     </td>
     <td><input type="checkbox"></td>
   </tr>
