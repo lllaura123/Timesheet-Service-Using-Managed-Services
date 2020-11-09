@@ -1,4 +1,20 @@
-<h1>{{title}}</h1>
-<app-students></app-students>
+<!--<div class="loginContainer">
+<div id="loginInfo">
+  <h3 *ngIf="(loginData==null)">Bitte Jira-Logindaten eingeben</h3>
+  <h3 *ngIf="loginData!=null">Angemeldet als {{loginData.loginUserName}}</h3>
+  <button *ngIf="inputShown"(click)="closeLoginInput()">Schließen</button>
+  <button *ngIf="!inputShown"(click)="openLoginInput()">Anmeldefeld öffnen</button>
+</div>
+<div id="loginInput">
+  <form [formGroup]="inputForm" (ngSubmit)="onSubmit(inputForm.value)">
+    <div><label>Username: </label>
+    <input type="text" formControlName="loginUserName"></div>
+    <div><label>Passwort: </label>
+    <input type="password" formControlName="password"></div>
+    <input type="submit">
+  </form>
+</div>
+</div>-->
+<router-outlet></router-outlet>
 
 

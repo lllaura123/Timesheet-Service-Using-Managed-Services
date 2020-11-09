@@ -1,0 +1,183 @@
+/* HeroesComponent's private CSS styles */
+/* Application-wide Styles */
+h1 {
+  color: #369;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 250%;
+  margin: 0 0 0 0;
+  padding:0;
+  width: 100%;
+  text-align: center;
+}
+h2, h3 {
+  color: #444;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: lighter;
+}
+body {
+  margin: 0 auto;
+}
+body, input[type="text"], button {
+  color: #333;
+  font-family: Cambria, Georgia;
+  }
+/* everywhere else */
+* {
+  font-family: Arial, Helvetica, sans-serif;
+}
+#wrapper {
+  width: 45%;
+}
+
+#tableContent{
+  width: 100%;
+}
+
+/*#inputForm {
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  width: 45%;
+}*/
+/*#dialog-popup {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  right: 15px;
+  border: 3px solid #f1f1f1;
+  z-index: 9;
+}*/
+/* navigation bar */
+/*#routerLink{
+  width: 20%;
+  background-color: #405061;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}*/
+
+#routerLink{
+  font-size: 100%;
+  padding: 5px 20px;
+  margin: 8px 0;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.arrow {
+  border: solid black;
+  border-width: 0 5px 5px 0;
+  padding: 5px;
+}
+
+.right {
+  transform: rotate(-45deg);
+  -webkit-transform: rotate(-45deg);
+  float:right;
+}
+
+.left {
+  transform: rotate(135deg);
+  -webkit-transform: rotate(135deg);
+  float: left;
+}
+.navigation {
+  margin: 0 0 0 0;
+  padding:0;
+  width: 100%;
+  text-align: center;
+}
+.navigation button, h2 {
+  display: inline-block;
+}
+/* table*/
+.students {
+  width: 100%;
+  margin: 0 0 2em 0;
+  list-style-type: none;
+  padding: 0;
+ /* width: 30em;*/
+}
+.students td {
+  cursor: pointer;
+  position: relative;
+  left: 0;
+  background-color: #EEE;
+  margin: .5em;
+  padding: .3em 0;
+  height: 1.6em;
+  border-radius: 4px;
+}
+
+.students th {
+  cursor: pointer;
+  position: relative;
+  left: 0;
+  color: white;
+  background-color: #405061;
+  margin: .5em;
+  padding: .3em 0;
+  height: 1.6em;
+  border-radius: 4px;
+}
+/* inputForm*/
+
+input[type=text], [type=password] {
+   width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+button[type=submit] {
+  width: 100%;
+  background-color: #405061;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* delete-Dialog*/
+.dialog-popup{
+  background-color: #fefefe;
+  margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
+  border: 1px solid #369;
+  padding: 16px;
+  width: 50%;
+  text-align: center;
+}
+.dialog-popup div{
+  display:inline;
+  padding: 5px;
+
+}
+.dialog-popup button{
+  width: 25%;
+  border-radius: 2px;
+  cursor: pointer;
+  padding: 5px;
+}
+
+.modal {
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+
+

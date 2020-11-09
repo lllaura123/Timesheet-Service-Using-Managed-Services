@@ -1,0 +1,24 @@
+<div class="loginContainer">
+  <!-- <div id="loginInfo">
+     <h3 *ngIf="(loginData==null)">Bitte erst Jira-Logindaten eingeben</h3>
+     <h3 *ngIf="loginData!=null">Angemeldet als {{loginData.loginUserName}}</h3>
+     <button *ngIf="inputShown"(click)="closeLoginInput()">Schließen</button>
+     <button *ngIf="!inputShown"(click)="openLoginInput()">Anmeldefeld öffnen</button>
+   </div>-->
+  <div id="loginInput">
+    <h1>Bitte die Jira-Logindaten eingeben</h1>
+    <form [formGroup]="inputForm"><!--(ngSubmit)="submitLoginData(inputForm.value)">-->
+      <div><label>Username: </label>
+        <input type="text" formControlName="loginUserName"></div>
+      <div><label>Passwort: </label>
+        <input type="password" formControlName="password"></div>
+      <div class="action">
+        <button type="submit" (click)="submitLoginData(inputForm.value)">Absenden</button>
+      </div>
+      <div class="action">
+        <button (click)="cancel()">Zurück</button>
+      </div>
+    </form>
+  </div>
+
+</div>

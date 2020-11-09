@@ -9,6 +9,11 @@ public class Timesheet {
     private final int month;
     boolean fileExists;
 
+    /**
+     * Setzt den Namen des Timesheetfiles zusammen
+     *
+     * @return Namen des Timesheetfiles
+     */
     public String getFileName() {
         return "Timesheet_" + student.getLastName() + "_" + (month > 9 ? month : "0" + month) + "-" + year + ".xls";
     }

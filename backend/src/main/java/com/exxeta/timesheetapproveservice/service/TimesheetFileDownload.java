@@ -8,56 +8,70 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 
 import java.io.*;
-import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
 
 
-public class TimesheetCreation {
-    private String REST_API;
-    private String ENCODED;
+public class TimesheetFileDownload {
+    private JiraRequest jiraRequest = new JiraRequest();
+    private String restApi;
+    private String encoded;
     private Timesheet timesheet;
+    private final int criticalLine = 17;
 
-    public TimesheetCreation(String ENCODED, Timesheet timesheet) {
-        this.ENCODED = ENCODED;
+    /**
+     * Konstruktor für TimesheetFileDownload
+     *
+     * @param ENCODED   Die verschlüsselten Jira-Logindaten
+     * @param timesheet Metainfos zu dem Timesheet, das runtergeladen werden soll
+     */
+    public TimesheetFileDownload(String ENCODED, Timesheet timesheet) {
+        this.encoded = ENCODED;
         this.timesheet = timesheet;
     }
 
-    public URL getExcel() throws IOException {
-        CloseableHttpClient httpClient = getHttpClient();
-        REST_API = getJiraLink(timesheet.getStudent().getUserName(), LocalDate.of(timesheet.getYear(), timesheet.getMonth(), 1));
-        CloseableHttpResponse response = executeHttpRequest(httpClient,
-                REST_API);
-        httpResponseIsValid(response);
-        URL fileLocation = copyToFile(response);
+    /**
+     * Führt get Request zu der jeweiligen Jira URL aus und schreibt den Inhalt der Response in eine .xls-Datei.
+     * In Zeile 17 wird in das HTML eine Zeile zur Beschreibung des Timesheets eingefügt.
+     *
+     * @return Gibt den Status der Response zurück
+     * @throws IOException
+     */
+    public int createTimesheetFile() throws IOException {
+        restApi = getJiraLink(timesheet.getStudent().getUserName(), LocalDate.of(timesheet.getYear(), timesheet.getMonth(), 1));
+        CloseableHttpResponse response = jiraRequest.getResponse(encoded, restApi);
+        copyToFile(response);
 
-        return fileLocation;
+        return response.getStatusLine().getStatusCode();
     }
 
-    private URL copyToFile(CloseableHttpResponse response) {
+    private void copyToFile(CloseableHttpResponse response) {
         File outputFile = new File(timesheet.getFileName());
-        URL url = null;
         try (InputStream in = response.getEntity().getContent();
-             FileWriter fileWriter = new FileWriter(outputFile);
-             BufferedReader br = new BufferedReader(new InputStreamReader(in))) {
+             OutputStreamWriter outputStreamWriter = new OutputStreamWriter(new FileOutputStream(outputFile), StandardCharsets.UTF_8);
+             BufferedReader br = new BufferedReader(new InputStreamReader(in, "UTF-8"))) {
             String line;
             int i = 1;
             while ((line = br.readLine()) != null) {
-                if (i == 17) {
-                    fileWriter.write("<tr><td>" + timesheet.getStudent().getFirstName() + " " + timesheet.getStudent().getLastName() + " Übersicht " + timesheet.getMonth() + "</td></tr>");
+                if (i == criticalLine) {
+                    outputStreamWriter.write("<tr><td>" + timesheet.getStudent().getFirstName() + " " + timesheet.getStudent().getLastName() + " Übersicht " + getMonthName(timesheet.getMonth() - 1) + " " + timesheet.getYear() + "</td></tr>");
                 }
-                fileWriter.write(line);
+                outputStreamWriter.write(line);
                 i = i + 1;
             }
-            url = outputFile.toURI().toURL();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return url;
+    }
+
+    private String getMonthName(int month) {
+        String[] monthNames = {"Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"};
+        return monthNames[month];
     }
 
 
-    public String getJiraLink(String userName, LocalDate firstDayOfMonth) {
+    private String getJiraLink(String userName, LocalDate firstDayOfMonth) {
         return ("https://jira.exxeta.com/secure/ConfigureReport!excelView.jspa?atl_token=A2V5-1AUF-ABL9-KTPY_b7227e07c9b918b954807128604db16872ce8445_lin" +
                 "&showDetails=true" +
                 "&reportingDay=1" +
@@ -80,17 +94,13 @@ public class TimesheetCreation {
                 "&monthView=true");
     }
 
-    public LocalDate getFirstDayOfMonth(int year, int month) {
-        return LocalDate.of(year, month, 1);
-    }
-
-    public LocalDate getLastDayOfLastMonth(LocalDate firstDayOfMonth) {
+    private LocalDate getLastDayOfLastMonth(LocalDate firstDayOfMonth) {
         LocalDate lastDayOfMonth = firstDayOfMonth.with(TemporalAdjusters.lastDayOfMonth());
         return lastDayOfMonth;
     }
 
     private CloseableHttpClient getHttpClient() {
-        SSLConnection ssl = new SSLConnection();
+        PoolingManager ssl = new PoolingManager();
         return HttpClients
                 .custom()
                 .useSystemProperties()
@@ -102,23 +112,8 @@ public class TimesheetCreation {
             IOException {
         HttpGet getRequest = new HttpGet(
                 request);
-        getRequest.addHeader(HttpHeaders.AUTHORIZATION, "Basic " + ENCODED);
+        getRequest.addHeader(HttpHeaders.AUTHORIZATION, "Basic " + encoded);
         getRequest.addHeader(HttpHeaders.CONTENT_TYPE, "application/json");
         return httpClient.execute(getRequest);
-    }
-
-    private void httpResponseIsValid(CloseableHttpResponse response) {
-        int statusCode = response.getStatusLine().getStatusCode();
-        if (statusCode != 200) {
-            if (statusCode == 403) {
-                throw new RuntimeException("Failed because of 403. Please login through your browser and validate" +
-                        " that you are not a robot.");
-            }
-            if (statusCode == 401) {
-                throw new RuntimeException("Failed because of 401: Login error.");
-            }
-            throw new RuntimeException("Failed: HTTP error code : "
-                    + response.getStatusLine().getStatusCode());
-        }
     }
 }

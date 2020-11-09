@@ -1,85 +1,79 @@
 package com.exxeta.timesheetapproveservice.application;
 
-import com.exxeta.timesheetapproveservice.TimesheetApproveServiceApplication;
 import com.exxeta.timesheetapproveservice.domain.Student;
-import com.exxeta.timesheetapproveservice.domain.Timesheet;
-import com.exxeta.timesheetapproveservice.service.StudentList;
-import com.exxeta.timesheetapproveservice.service.TimesheetCreation;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import com.exxeta.timesheetapproveservice.service.JiraRequest;
+import com.exxeta.timesheetapproveservice.service.StudentRepository;
+import com.exxeta.timesheetapproveservice.service.UsernameValidation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.ws.rs.core.Response;
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.Base64;
-import java.util.List;
+import java.util.Optional;
+import java.util.Properties;
 
-import static org.springframework.http.MediaType.APPLICATION_OCTET_STREAM;
+import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
+import static org.springframework.http.MediaType.TEXT_PLAIN;
 
-
+@CrossOrigin("http://localhost:4200")
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("students")
-@Slf4j
+
 public class StudentController {
+
     @Autowired
-    private StudentList studentList;
+    private StudentRepository studentRepository;
 
+    private JiraRequest jiraRequest = new JiraRequest();
 
-    @GetMapping("/{year}/{month}")
-    @CrossOrigin
-    public List<Timesheet> getStudentlist(@PathVariable int year, @PathVariable int month) {
+    @Operation(summary = "Student zu Liste hinzufügen, insofern sein Username im Jira existiert")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Student wurde hinzugefügt",
+                    content = {@Content(mediaType = "text/plain")}),
+            @ApiResponse(responseCode = "400", description = "Es fehlen Request Parameter",
+                    content = @Content(mediaType = "text/plain")),
+            @ApiResponse(responseCode = "404", description = "Username existiert nicht in Jira",
+                    content = @Content(mediaType = "text/plain"))})
 
-        List<Student> students = studentList.getStudents();
-        List<Timesheet> timesheets = new ArrayList<>();
-        for (Student student : students) {
-            timesheets.add(new Timesheet(student, year, month));
+    @PostMapping(consumes = MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity postStudent(@RequestParam String firstName, @RequestParam String lastName, @RequestParam String userName, @RequestParam String loginUserName, @RequestParam String password) {
+        if ((firstName == null || firstName.isEmpty()) || (lastName == null || lastName.isEmpty()) || (userName == null || userName.isEmpty())) {
+            return ResponseEntity.status(Response.Status.BAD_REQUEST.getStatusCode()).contentType(TEXT_PLAIN).body("Bad Request: Stelle sicher, dass alle Werte angegeben sind");
         }
-        System.out.println(timesheets.get(1));
-        checkIfFileExists(timesheets, year, month);
-        return timesheets;
-    }
-
-    @CrossOrigin
-    @PutMapping(value = "/{userName}/timesheets/{year}/{month}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity createExcel(@PathVariable String userName, @PathVariable int year, @PathVariable int month) throws IOException {
-        proxySetUp();
-        Student student = studentList.getStudentWithUserName(userName);
-        Timesheet timesheet = new Timesheet(student, year, month);
-        final String ENCODEDCREDENTIALS = Base64.getEncoder().encodeToString((TimesheetApproveServiceApplication.getuserName() + ":" + TimesheetApproveServiceApplication.getPassword()).getBytes());
-        TimesheetCreation timesheetCreation = new TimesheetCreation(ENCODEDCREDENTIALS, timesheet);
-        URL fileLocation = timesheetCreation.getExcel();
-        return ResponseEntity.ok()
-                .body("{\"filePath\": \"" + fileLocation + "\", \"fileExists\": \"" + true + "\"}");
-    }
-
-    @CrossOrigin
-    @GetMapping(value = "/{userName}/timesheets/{year}/{month}")
-    public ResponseEntity openExcel(@PathVariable String userName, @PathVariable int year, @PathVariable int month) throws IOException {
-        Timesheet timesheet = new Timesheet(studentList.getStudentWithUserName(userName), year, month);
-        byte[] fileContent = Files.readAllBytes(Paths.get(timesheet.getFileName()));
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("fileName", timesheet.getFileName());
-        headers.add(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, "fileName");
-        return ResponseEntity.ok()
-                .contentType(APPLICATION_OCTET_STREAM)
-                .headers(headers)
-                .body(fileContent);
-    }
-
-    public void checkIfFileExists(List<Timesheet> timesheets, int year, int month) {
-        for (Timesheet timesheet : timesheets) {
-            if (Files.exists(Paths.get("Timesheet_" + timesheet.getStudent().getLastName() + "_" + ((month < 10) ? "0" + (month) : (month)) + "-" + year + ".xls"))) {
-                timesheet.setFileExists(true);
-            } else timesheet.setFileExists(false);
+        if (getProperties() == "true") {
+            proxySetUp();
         }
+        final String ENCODEDCREDENTIALS = Base64.getEncoder().encodeToString((loginUserName + ":" + password).getBytes());
+        UsernameValidation usernameValidation = new UsernameValidation(ENCODEDCREDENTIALS);
+        boolean validated = usernameValidation.validateUserName(userName);
+        if (!validated) {
+            return ResponseEntity.status(Response.Status.NOT_FOUND.getStatusCode()).contentType(TEXT_PLAIN).body("Bad Request: Username existiert nicht in Jira");
+        }
+        studentRepository.addStudent(firstName, lastName, userName);
+        return ResponseEntity.ok().contentType(TEXT_PLAIN).body("Student wurde hinzugefügt");
+    }
+
+    @Operation(summary = "Student aus Liste löschen")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Student wurde gelöscht",
+                    content = {@Content(mediaType = "text/plain")}),
+            @ApiResponse(responseCode = "400", description = "Username ist nicht in Liste enthalten",
+                    content = @Content(mediaType = "text/plain"))})
+    @DeleteMapping(value = "/{userName}")
+    public ResponseEntity deleteStudent(@PathVariable String userName) {
+        Optional<Student> student = studentRepository.getStudentWithUserName(userName);
+        if (!student.isPresent()) {
+            return ResponseEntity.status(Response.Status.BAD_REQUEST.getStatusCode()).contentType(TEXT_PLAIN).body("Bad Request: Username wurde nicht gefunden");
+        }
+        studentRepository.deleteStudent(student.get());
+        return ResponseEntity.ok().contentType(TEXT_PLAIN).body("Student wurde gelöscht");
     }
 
     private static void proxySetUp() {
@@ -88,4 +82,15 @@ public class StudentController {
         System.setProperty("https.proxyHost", "webproxy01.gisa.dmz");
         System.setProperty("https.proxyPort", "8080");
     }
+
+    private String getProperties() {
+        Properties properties = new Properties();
+        try (FileInputStream fileInputStream = new FileInputStream("config.properties")) {
+            properties.load(fileInputStream);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return properties.getProperty("behindProxy", "true");
+    }
+
 }

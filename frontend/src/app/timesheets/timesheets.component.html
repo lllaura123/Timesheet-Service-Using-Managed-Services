@@ -1,0 +1,73 @@
+<div id="wrapper">
+  <h1>Timesheets</h1>
+  <div class="navigation">
+    <button class="arrow left" (click)="getLastMonth()"></button>
+    <h2>{{this.monthName}}</h2>
+    <button class="arrow right" (click)="getNextMonth()"></button>
+  </div>
+  <nav>
+    <button id="routerLink" routerLink="/input">Student hinzufügen</button>
+  </nav>
+  <div id="tableContent">
+    <table class="students">
+      <tr>
+        <th>Vorname</th>
+        <th>Nachname</th>
+        <th>UserName</th>
+        <th></th>
+        <th></th>
+        <th></th>
+      </tr>
+      <tr *ngFor="let timesheet of timesheets">
+        <td> {{timesheet.student.firstName}}</td>
+        <td> {{timesheet.student.lastName}}</td>
+        <td>{{timesheet.student.userName}}</td>
+        <td>
+          <button (click)="createExcel(timesheet)">Download Timesheet</button>
+        </td>
+        <td>
+          <button [disabled]="!timesheet.fileExists" (click)="openExcel(timesheet)">Timesheet anzeigen</button>
+        </td>
+        <td>
+          <button (click)="showDialog(timesheet)">Student Löschen</button>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <!--<div id="inputForm">
+  <form [formGroup]="inputForm" (ngSubmit)="onSubmit(inputForm.value)">
+    <div>
+      <label >First Name</label>
+      <input type="text" formControlName="firstName" placeholder="First Name">
+    </div>
+    <div>
+      <label>Last Name</label>
+      <input type="text" formControlName="lastName" placeholder="Last Name">
+    </div>
+    <div>
+      <label> Jira Username</label>
+      <input type="text" formControlName="userName" placeholder="UserName">
+    </div>
+    <div>
+      <button type="submit">Submit</button>
+    </div>
+  </form>
+  </div>-->
+</div>
+<div class="modal" *ngIf="dialog">
+  <div class="dialog-popup">
+    <p><label>Nur diesen Student oder auch alle zugehörigen Timesheets löschen?</label></p>
+    <div>
+      <button (click)="deleteStudent()">Nur Student</button>
+    </div>
+    <div>
+      <button (click)="deleteTimesheet()">Student und alle seine Timesheets</button>
+    </div>
+    <div>
+      <button (click)="cancel()">Abbrechen</button>
+    </div>
+  </div>
+</div>
+
+
+

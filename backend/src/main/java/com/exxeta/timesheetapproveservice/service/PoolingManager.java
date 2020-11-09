@@ -15,7 +15,7 @@ import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 
-public class SSLConnection {
+public class PoolingManager {
     /**
      * Verifiziert jeden Host.
      */
@@ -41,7 +41,7 @@ public class SSLConnection {
         try {
             SSLConnectionSocketFactory trustSelfSignedSocketFactory = new SSLConnectionSocketFactory(
                     new SSLContextBuilder().loadTrustMaterial(null, new TrustSelfSignedStrategy()).build(),
-                    new SSLConnection.TrustAllHostNameVerifier());
+                    new PoolingManager.TrustAllHostNameVerifier());
 
             socketFactoryRegistry = RegistryBuilder
                     .<ConnectionSocketFactory>create()

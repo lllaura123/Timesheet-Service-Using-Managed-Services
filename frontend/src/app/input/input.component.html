@@ -1,0 +1,31 @@
+<div id="inputForm">
+  <form [formGroup]="inputForm">
+    <div>
+      <label>Vorname</label>
+      <input type="text" formControlName="firstName" placeholder="Vorname">
+    </div>
+    <div>
+      <label>Nachname</label>
+      <input type="text" formControlName="lastName" placeholder="Nachname">
+    </div>
+    <div>
+      <label> Jira Username</label>
+      <input type="text" formControlName="userName" placeholder="Username">
+    </div>
+    <div>
+      <div class="button">
+        <button type="submit" (click)="submitStudentData(inputForm.value)">Absenden</button>
+      </div>
+      <div class="button">
+        <button (click)="cancel()">Abbrechen</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<!--<div *ngIf="showModal" id="errorModal">
+  <div id="errorDisplay">
+  <h2 id="errorMessage">Error</h2>
+  <button>close</button>
+  </div>
+</div>-->

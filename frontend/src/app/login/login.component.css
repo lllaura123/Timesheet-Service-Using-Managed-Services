@@ -1,0 +1,40 @@
+.loginContainer{
+  width: 45%;
+  padding: 10px;
+  border: 1px solid #369;
+}
+/*.loginContainer button{
+  float: right;
+}
+#loginInfo{
+  padding-bottom: 15px;
+
+}
+#loginInfo button, h3{
+  display: inline;
+}*/
+
+input[type=text], [type=password] {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+button, input[type=submit] {
+  width: 47%;
+  background-color: #405061;
+  color: white;
+  padding: 14px 30px;
+  margin: 13px 0;
+  border: white;
+  border-radius: 4px;
+  cursor: pointer;
+
+}
+.action{
+  padding: 10px;
+  display:inline;
+}
