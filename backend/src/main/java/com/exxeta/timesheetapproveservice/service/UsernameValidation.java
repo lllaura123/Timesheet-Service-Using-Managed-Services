@@ -10,19 +10,19 @@ public class UsernameValidation {
     private JiraRequest jiraRequest = new JiraRequest();
 
     /**
-     * Konstruktor für UsernameValidation
+     * Constructor UsernameValidation
      *
-     * @param credentials Die verschlüsselten Jira-Logindaten
+     * @param credentials encoded Jira Credentials
      */
     public UsernameValidation(String credentials) {
         this.encoded = credentials;
     }
 
     /**
-     * Prüft, ob der übergebene Username im Jira vorhanden ist
+     * Checks if username exists in Jira
      *
-     * @param userName =der Username der überprüft werden soll
-     * @return false, wenn Username nicht gefunden wird, ansonsten true
+     * @param userName username to be checked
+     * @return false if username not found else true
      */
     public boolean validateUserName(String userName) {
         jiraUrl = "https://jira.exxeta.com/issues/?jql=assignee%20in%20(" + userName + ")";

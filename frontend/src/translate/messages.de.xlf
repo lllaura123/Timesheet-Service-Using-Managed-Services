@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="en-US" datatype="plaintext" original="ng2.template">
+    <body>
+        <trans-unit id="january">
+        <source>Januar</source>
+        <target>Januar</target>
+      </trans-unit>
+      <trans-unit id="february">
+        <source>Februar</source>
+        <target>Februar</target>
+      </trans-unit>
+      <trans-unit id="march">
+          <source>März</source>
+          <target>März</target>
+      </trans-unit>
+      <trans-unit id="april">
+        <source>April</source>
+        <target>April</target>
+      </trans-unit>
+      <trans-unit id="may">
+        <source>Mai</source>
+        <target>Mai</target>
+      </trans-unit>
+      <trans-unit id="june">
+        <source>Juni</source>
+        <target>Juni</target>
+      </trans-unit>
+      <trans-unit id="july">
+        <source>Juli</source>
+        <target>Juli</target>
+      </trans-unit>
+      <trans-unit id="august">
+        <source>August</source>
+        <target>August</target>
+      </trans-unit>
+      <trans-unit id="september">
+        <source>September</source>
+        <target>September</target>
+      </trans-unit>
+      <trans-unit id="october">
+        <source>Oktober</source>
+        <target>Oktober</target>
+      </trans-unit>
+      <trans-unit id="november">
+        <source>November</source>
+        <target>November</target>
+      </trans-unit>
+      <trans-unit id="december">
+        <source>Dezember</source>
+        <target>Dezember</target>
+      </trans-unit>
+      <trans-unit id="8148550880729695161" datatype="html">
+        <source>Bitte geben Sie die Daten des Studenten ein:</source>
+        <target>Bitte geben Sie die Daten des Studenten ein:</target>
+      </trans-unit>
+      <trans-unit id="60ab7cf20adbbcb630f03be27a9377d220fd4d29" datatype="html">
+        <source>Student hinzufügen</source>
+        <target>Student hinzufügen</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/timesheets/timesheets.component.html</context>
+          <context context-type="linenumber">9</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="d6507e7b5ae51f1734f3e169ef4cf6ef56f0001f" datatype="html">
+        <source>Vorname</source>
+        <target>Vorname</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/timesheets/timesheets.component.html</context>
+          <context context-type="linenumber">14</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/input/input.component.html</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/input/input.component.html</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+        <note priority="1" from="description">firstName</note>
+      </trans-unit>
+      <trans-unit id="074a550816cde9894e6c6d3bafcbc7be199f059b" datatype="html">
+        <source>Nachname</source>
+        <target>Nachname</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/timesheets/timesheets.component.html</context>
+          <context context-type="linenumber">15</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/input/input.component.html</context>
+          <context context-type="linenumber">9</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/input/input.component.html</context>
+          <context context-type="linenumber">10</context>
+        </context-group>
+        <note priority="1" from="description">lastName</note>
+      </trans-unit>
+      <trans-unit id="108d7d104f08920d4c40f2fce7cc1795d0d38f2b" datatype="html">
+        <source>UserName</source>
+        <target>Username</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/timesheets/timesheets.component.html</context>
+          <context context-type="linenumber">16</context>
+        </context-group>
+        <note priority="1" from="description">userName</note>
+      </trans-unit>
+      <trans-unit id="0466e24ba0bad5eab59dcec6b8c3f463011a4ef6" datatype="html">
+        <source>Timesheet anzeigen</source>
+        <target>Timesheet anzeigen</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/timesheets/timesheets.component.html</context>
+          <context context-type="linenumber">29</context>
+        </context-group>
+        <note priority="1" from="description">openTimesheet</note>
+      </trans-unit>
+      <trans-unit id="f1359b208b9877fb72c4986af13d5bed78ce35c2" datatype="html">
+        <source>Student Löschen</source>
+        <target>Student löschen</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/timesheets/timesheets.component.html</context>
+          <context context-type="linenumber">32</context>
+        </context-group>
+        <note priority="1" from="description">deleteStudent</note>
+      </trans-unit>
+      <trans-unit id="a813fd43c9a1b211fe541045d263d2c500c80f0f" datatype="html">
+        <source>Löschen</source>
+        <target>Löschen</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/timesheets/timesheets.component.html</context>
+          <context context-type="linenumber">76</context>
+        </context-group>
+        <note priority="1" from="description">deleteModalTitle</note>
+      </trans-unit>
+      <trans-unit id="e9ba6028e81efb1fc3ac89cae89fedaa0ce12794" datatype="html">
+        <source>Nur diesen Studenten oder alle zugehörigen Timesheets löschen?</source>
+        <target>Nur diesen Studenten oder auch alle zugehörigen Timesheets löschen?</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/timesheets/timesheets.component.html</context>
+          <context context-type="linenumber">82</context>
+        </context-group>
+        <note priority="1" from="description">deleteModalBody</note>
+      </trans-unit>
+      <trans-unit id="af361af63b51834031177bb09037474abd26da06" datatype="html">
+        <source>Nur Student</source>
+        <target>Nur Student</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/timesheets/timesheets.component.html</context>
+          <context context-type="linenumber">85</context>
+        </context-group>
+        <note priority="1" from="description">optionDeleteStudent</note>
+      </trans-unit>
+      <trans-unit id="735eaf59682879f187639743ecb45313e0d17057" datatype="html">
+        <source>Student und alle seine Timesheets</source>
+        <target>Student und alle seine Timesheets</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/timesheets/timesheets.component.html</context>
+          <context context-type="linenumber">86</context>
+        </context-group>
+        <note priority="1" from="description">optionDeleteTimesheets</note>
+      </trans-unit>
+      <trans-unit id="1b24932d0f2269e4b41d0f936fdb5de1b94da401" datatype="html">
+        <source>Abbrechen</source>
+        <target>Abbrechen</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/timesheets/timesheets.component.html</context>
+          <context context-type="linenumber">87</context>
+        </context-group>
+        <note priority="1" from="description">cancel</note>
+      </trans-unit>
+      <trans-unit id="0cc5cf4d8d859f0fe6f8372e771857b0d242ebec" datatype="html">
+        <source> Jira Username</source>
+        <target>Jira UserName</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/input/input.component.html</context>
+          <context context-type="linenumber">13</context>
+        </context-group>
+        <note priority="1" from="description">jiraUserName</note>
+      </trans-unit>
+      <trans-unit id="08c74dc9762957593b91f6eb5d65efdfc975bf48" datatype="html">
+        <source>Username</source>
+        <target>Username</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/input/input.component.html</context>
+          <context context-type="linenumber">14</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="f504721f06d60b5f234278f84ffeb23086f292ba" datatype="html">
+        <source>Absenden</source>
+        <target>Absenden</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/input/input.component.html</context>
+          <context context-type="linenumber">18</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/login/login.component.html</context>
+          <context context-type="linenumber">16</context>
+        </context-group>
+        <note priority="1" from="description">submit</note>
+      </trans-unit>
+      <trans-unit id="c47252d6cffe14a672e7ef04b2cc30e761f240ae" datatype="html">
+        <source>Zurück</source>
+        <target>Zurück</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/input/input.component.html</context>
+          <context context-type="linenumber">21</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/login/login.component.html</context>
+          <context context-type="linenumber">19</context>
+        </context-group>
+        <note priority="1" from="description">back</note>
+      </trans-unit>
+      <trans-unit id="33bc7238e58f2731172866eae079132aad379c71" datatype="html">
+        <source>Bitte die Jira-Logindaten eingeben</source>
+        <target>Bitte die Jira-Logindaten eingeben</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/login/login.component.html</context>
+          <context context-type="linenumber">9</context>
+        </context-group>
+        <note priority="1" from="description">loginHeader</note>
+      </trans-unit>
+      <trans-unit id="4475c0d156cb63f80764a543ef3fc860af88dad4" datatype="html">
+        <source>Username: </source>
+        <target>Username: </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/login/login.component.html</context>
+          <context context-type="linenumber">11</context>
+        </context-group>
+        <note priority="1" from="description">userName</note>
+      </trans-unit>
+      <trans-unit id="104dd8c44fc8e206d0dfe90959071d24a35162a0" datatype="html">
+        <source>Passwort: </source>
+        <target>Passwort: </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/login/login.component.html</context>
+          <context context-type="linenumber">13</context>
+        </context-group>
+        <note priority="1" from="description">password</note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -6,19 +6,29 @@
      <button *ngIf="!inputShown"(click)="openLoginInput()">Anmeldefeld öffnen</button>
    </div>-->
   <div id="loginInput">
-    <h1>Bitte die Jira-Logindaten eingeben</h1>
+    <h3 i18n="loginHeader">Bitte die Jira-Logindaten eingeben</h3>
     <form [formGroup]="inputForm"><!--(ngSubmit)="submitLoginData(inputForm.value)">-->
-      <div><label>Username: </label>
-        <input type="text" formControlName="loginUserName"></div>
-      <div><label>Passwort: </label>
-        <input type="password" formControlName="password"></div>
+      <div class="form-group"><label i18n="userName">Username: </label>
+        <input class="form-control" type="text" formControlName="loginUserName"></div>
+      <div class="form-group"><label i18n="password">Passwort: </label>
+        <input class="form-control" type="password" formControlName="password"></div>
       <div class="action">
-        <button type="submit" (click)="submitLoginData(inputForm.value)">Absenden</button>
+        <button i18n="submit" class="btn btn-primary" type="submit" (click)="submitLoginData(inputForm.value)">
+          Absenden
+        </button>
       </div>
       <div class="action">
-        <button (click)="cancel()">Zurück</button>
+        <button i18n="back" class="btn btn-primary" (click)="cancel()">Zurück</button>
       </div>
     </form>
   </div>
 
 </div>
+<!--
+<div  class="alert alert-danger alert-dismissible fade show" id="alert" role="alert">
+  <strong>Error!</strong> {{errorMessage}}
+  <button type="button" class="close" (click)="closeAlert()" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>-->
+

@@ -21,10 +21,10 @@ public class TimesheetFileDownload {
     private final int criticalLine = 17;
 
     /**
-     * Konstruktor für TimesheetFileDownload
+     * Constructor for TimesheetFileDownload
      *
-     * @param ENCODED   Die verschlüsselten Jira-Logindaten
-     * @param timesheet Metainfos zu dem Timesheet, das runtergeladen werden soll
+     * @param ENCODED   encoded credentials
+     * @param timesheet meta information for timesheet file to be downloaded
      */
     public TimesheetFileDownload(String ENCODED, Timesheet timesheet) {
         this.encoded = ENCODED;
@@ -32,10 +32,10 @@ public class TimesheetFileDownload {
     }
 
     /**
-     * Führt get Request zu der jeweiligen Jira URL aus und schreibt den Inhalt der Response in eine .xls-Datei.
-     * In Zeile 17 wird in das HTML eine Zeile zur Beschreibung des Timesheets eingefügt.
+     * Executes Request to Jira Url and writes response content to .xls file
+     * Adds Description line in line 17
      *
-     * @return Gibt den Status der Response zurück
+     * @return Response status
      * @throws IOException
      */
     public int createTimesheetFile() throws IOException {

@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, LOCALE_ID } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
@@ -28,7 +28,7 @@ import { LoginComponent } from './login/login.component';
     AppRoutingModule,
 //    StorageServiceModule
   ],
-  providers: [],
+  providers:  [ ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

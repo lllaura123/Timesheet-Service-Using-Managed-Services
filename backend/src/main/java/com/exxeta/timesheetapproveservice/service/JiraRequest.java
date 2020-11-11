@@ -10,10 +10,17 @@ import java.io.IOException;
 
 public class JiraRequest {
 
+    /**
+     * Executes Request to Jira
+     *
+     * @param encoded encoded Jira Credentials
+     * @param request Request to be executed
+     * @return Http Response
+     * @throws IOException
+     */
     public CloseableHttpResponse getResponse(String encoded, String request) throws IOException {
         CloseableHttpClient httpClient = getHttpClient();
         CloseableHttpResponse response = executeHttpRequest(httpClient, request, encoded);
-        ;
         return response;
     }
 

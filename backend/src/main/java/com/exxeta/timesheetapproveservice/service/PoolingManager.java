@@ -17,7 +17,7 @@ import java.security.NoSuchAlgorithmException;
 
 public class PoolingManager {
     /**
-     * Verifiziert jeden Host.
+     * Verifies every host.
      */
     private static class TrustAllHostNameVerifier implements HostnameVerifier {
         public boolean verify(String hostname, SSLSession session) {

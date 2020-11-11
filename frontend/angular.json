@@ -9,6 +9,12 @@
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
+      "i18n": {
+        "locales": {
+          "en": "src/translate/messages.en.xlf",
+          "de": "src/translate/messages.de.xlf"
+        }
+      },
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
@@ -18,18 +24,32 @@
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
+
             "aot": true,
             "assets": [
               "src/favicon.ico",
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.css",
+              "node_modules/bootstrap/dist/js/bootstrap.min.js"
             ],
             "scripts": [
+              "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/bootstrap/dist/js/bootstrap.min.js"
             ]
           },
           "configurations": {
+            "en": {
+              "localize": [
+                "en"
+              ]
+            },
+            "de": {
+              "localize": [
+                "de"
+              ]
+            },
             "production": {
               "fileReplacements": [
                 {
@@ -68,6 +88,12 @@
           "configurations": {
             "production": {
               "browserTarget": "timesheet-approve-service:build:production"
+            },
+            "en": {
+              "browserTarget": "timesheet-approve-service:build:en"
+            },
+            "de": {
+              "browserTarget": "timesheet-approve-service:build:de"
             }
           }
         },

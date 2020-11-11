@@ -1,11 +1,13 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Timesheet } from '../timesheets';
 import {LoginData} from '../loginData';
 import { TimesheetService } from '../timesheet.service';
+import { MessageService } from '../message.service';
 
 import { HttpHeaders} from '@angular/common/http';
 import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
+import '@angular/localize/init'
 //import {SESSION_STORAGE, WebStorageService} from 'angular-webstorage-service';
 
 @Component({
@@ -22,7 +24,7 @@ export class TimesheetsComponent implements OnInit {
   selectedTimesheet: Timesheet;
   loginData: LoginData;
 
-  constructor(private timesheetService: TimesheetService, private formBuilder: FormBuilder, private router:Router) {
+  constructor(private timesheetService: TimesheetService, private formBuilder: FormBuilder, private router:Router, private messageService: MessageService) {
     this.inputForm = this.formBuilder.group({
       loginUserName: '',
       password: ''
@@ -52,12 +54,28 @@ export class TimesheetsComponent implements OnInit {
     this.timesheetService.getStudents(year, month)
       .subscribe(res=> {this.timesheets= res;
         }, error => {
-          if (error.status==0) alert("Connection refused");
+          if (error.status==0) this.messageService.alertMessage="Verbindung wurde abgelehnt";
           });
   }
 
   createExcel(timesheet: Timesheet){
     if (sessionStorage.getItem('loginUserName')==null||sessionStorage.getItem('password')==null){
+   /*   this.messageService.somethingChanged.subscribe((data: any) => {
+          console.log("Data from login component", data);
+      })*/
+      this.messageService.observeLoginData().subscribe(exists=>{
+        if (exists){
+          this.timesheetService.createTimesheet(timesheet.student.userName, timesheet.year, timesheet.month)
+            .subscribe(responseData => {
+              timesheet.fileExists= responseData.fileExists;
+              console.log("Created File");
+              window.location.reload();
+            }, error => {
+              if (error.status==0)this.messageService.alertMessage="Verbindung wurde abgelehnt";
+              else if (error.status==500) this.messageService.alertMessage="500: Internal Servererror. Es könnte ein Problem mit der Proxy Konfiguration sein.";
+              else this.messageService.alertMessage=error.error;
+            });
+        }});
       this.router.navigate(['/login']);
     } else{
       this.timesheetService.createTimesheet(timesheet.student.userName, timesheet.year, timesheet.month)
@@ -65,9 +83,9 @@ export class TimesheetsComponent implements OnInit {
           timesheet.fileExists= responseData.fileExists;
           console.log("Created File");
         }, error => {
-          if (error.status==0)alert("Connection refused");
-          else if (error.status==500) alert("500: Internal Servererror. Es könnte ein Problem mit der Proxy Konfiguration sein.")
-          else alert(error.error);
+          if (error.status==0)this.messageService.alertMessage="Verbindung wurde abgelehnt";
+          else if (error.status==500) this.messageService.alertMessage="500: Internal Servererror. Es könnte ein Problem mit der Proxy Konfiguration sein.";
+          else this.messageService.alertMessage=error.error;
         });
       }
 
@@ -90,9 +108,8 @@ export class TimesheetsComponent implements OnInit {
         window.URL.revokeObjectURL(url);
         a.remove(); // remove the element
       }, error => {
-         if (error.status==0)alert("Connection refused");
-         else alert(error.error);
-        console.log('download error');
+         if (error.status==0) this.messageService.alertMessage="Verbindung zum Backend wurde abgelehnt";
+         else this.messageService.alertMessage= error.error;
       }, () => {
         console.log('Completed file download.')
       });
@@ -105,10 +122,9 @@ export class TimesheetsComponent implements OnInit {
 
   async deleteStudent(){
     await this.timesheetService.deleteStudent(this.selectedTimesheet.student).toPromise()
-      .then(res => {
-        console.log("res: "+ res);
+      .then(res => { console.log(res);
       })
-      .catch(err => { alert(err.error)});
+      .catch(err => this.messageService.alertMessage=err.error);
       this.getStudents(this.date.getFullYear(), this.date.getMonth()+1);
       this.dialog= false;
   }
@@ -117,7 +133,7 @@ export class TimesheetsComponent implements OnInit {
       .then(res => {
         console.log("res: "+ res);
       })
-      .catch(err => { alert(err.error)});
+      .catch(err => this.messageService.alertMessage= err.error);
       this.getStudents(this.date.getFullYear(), this.date.getMonth()+1);
       this.dialog= false;
   }
@@ -153,8 +169,10 @@ export class TimesheetsComponent implements OnInit {
       this.getStudents(this.date.getFullYear(), this.date.getMonth()+1);
     }*/
 
-  displayMonth(): string {
-    let monthNames= ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August","September", "Oktober", "November", "Dezember"];
+  displayMonth(): string {;
+    let monthNames= [$localize`:@@january:Januar`, $localize`:@@february:Februar`, $localize`:@@march:März`, $localize`:@@april:April`, $localize`:@@may:Mai`, $localize`:@@june:Juni`,
+                    $localize`:@@july:Juli`, $localize`:@@august:August`,$localize`:@@september:September`, $localize`:@@october:Oktober`, $localize`:@@november:November`, $localize`:@@december:Dezember`];
+
     return monthNames[this.date.getMonth()]+" "+ this.date.getFullYear();
   }
 

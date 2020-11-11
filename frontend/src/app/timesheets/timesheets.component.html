@@ -2,23 +2,23 @@
   <h1>Timesheets</h1>
   <div class="navigation">
     <button class="arrow left" (click)="getLastMonth()"></button>
-    <h2>{{this.monthName}}</h2>
+    <h3>{{this.monthName}}</h3>
     <button class="arrow right" (click)="getNextMonth()"></button>
   </div>
   <nav>
-    <button id="routerLink" routerLink="/input">Student hinzufügen</button>
+    <button i18n id="routerLink" routerLink="/input">Student hinzufügen</button>
   </nav>
   <div id="tableContent">
-    <table class="students">
-      <tr>
-        <th>Vorname</th>
-        <th>Nachname</th>
-        <th>UserName</th>
-        <th></th>
-        <th></th>
-        <th></th>
-      </tr>
-      <tr *ngFor="let timesheet of timesheets">
+    <table class="table table-striped">
+      <thead class="thead">
+      <th i18n="firstName">Vorname</th>
+      <th i18n="lastName">Nachname</th>
+      <th i18n="userName">UserName</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      </thead>
+      <tr scope="row" *ngFor="let timesheet of timesheets">
         <td> {{timesheet.student.firstName}}</td>
         <td> {{timesheet.student.lastName}}</td>
         <td>{{timesheet.student.userName}}</td>
@@ -26,48 +26,43 @@
           <button (click)="createExcel(timesheet)">Download Timesheet</button>
         </td>
         <td>
-          <button [disabled]="!timesheet.fileExists" (click)="openExcel(timesheet)">Timesheet anzeigen</button>
+          <button i18n="openTimesheet" [disabled]="!timesheet.fileExists" (click)="openExcel(timesheet)">Timesheet
+            anzeigen
+          </button>
         </td>
         <td>
-          <button (click)="showDialog(timesheet)">Student Löschen</button>
+          <button i18n="deleteStudent" (click)="showDialog(timesheet)" data-toggle="modal" data-target="#deleteModal">
+            Student Löschen
+          </button>
         </td>
       </tr>
     </table>
   </div>
-  <!--<div id="inputForm">
-  <form [formGroup]="inputForm" (ngSubmit)="onSubmit(inputForm.value)">
-    <div>
-      <label >First Name</label>
-      <input type="text" formControlName="firstName" placeholder="First Name">
-    </div>
-    <div>
-      <label>Last Name</label>
-      <input type="text" formControlName="lastName" placeholder="Last Name">
-    </div>
-    <div>
-      <label> Jira Username</label>
-      <input type="text" formControlName="userName" placeholder="UserName">
-    </div>
-    <div>
-      <button type="submit">Submit</button>
-    </div>
-  </form>
-  </div>-->
-</div>
-<div class="modal" *ngIf="dialog">
-  <div class="dialog-popup">
-    <p><label>Nur diesen Student oder auch alle zugehörigen Timesheets löschen?</label></p>
-    <div>
-      <button (click)="deleteStudent()">Nur Student</button>
-    </div>
-    <div>
-      <button (click)="deleteTimesheet()">Student und alle seine Timesheets</button>
-    </div>
-    <div>
-      <button (click)="cancel()">Abbrechen</button>
+
+  <div class="modal" id="deleteModal">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 i18n="deleteModalTitle" class="modal-title">Löschen</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p i18n="deleteModalBody">Nur diesen Studenten oder alle zugehörigen Timesheets löschen?</p>
+        </div>
+        <div class="modal-footer">
+          <button i18n="optionDeleteStudent" type="button" (click)="deleteStudent()" class="btn btn-primary"
+                  data-dismiss="modal">Nur Student
+          </button>
+          <button i18n="optionDeleteTimesheets" type="button" (click)="deleteTimesheet()" class="btn btn-primary"
+                  data-dismiss="modal">Student und alle seine Timesheets
+          </button>
+          <button i18n="cancel" type="button" class="btn btn-secondary" data-dismiss="modal">Abbrechen</button>
+        </div>
+      </div>
     </div>
   </div>
-</div>
 
 
 

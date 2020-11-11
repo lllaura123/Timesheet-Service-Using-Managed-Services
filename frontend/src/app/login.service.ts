@@ -8,7 +8,8 @@ import { HttpClient, HttpHeaders, HttpParams, HttpErrorResponse} from '@angular/
   providedIn: 'root'
 })
 export class LoginService {
-  loginData: LoginData
+  loginData: LoginData;
+
   constructor(private http: HttpClient) { }
 
   validateLogin(loginData:LoginData){

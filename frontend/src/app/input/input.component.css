@@ -1,6 +1,6 @@
-#inputForm {
+@import "https://bootswatch.com/4/flatly/bootstrap.min.css";
+/*#inputForm {
   border-radius: 5px;
-/*  background-color: #f2f2f2;*/
   width: 45%;
 }
 input[type=text] {
@@ -11,39 +11,46 @@ input[type=text] {
   border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;
+}*/
+
+#inputForm{
+  width: 80%;
+  padding: 10px;
 }
 
-button {
+.action button {
   width: 49%;
-  background-color: #405061;
+  margin: 0 auto;
+ /* background-color: #405061;
   color: white;
   padding: 14px 30px;
   margin: 13px 0;
   border: white;
   border-radius: 4px;
-  cursor: pointer;
+  cursor: pointer;*/
 }
-.button{
-  padding: 14px 1px;
+.action{
+  padding: 2px;
   display: inline;
 }
+/*
 #errorModal {
   display: none;
-  position: fixed; /* Stay in place */
-  z-index: 3; /* Sit on top */
-  padding-top: 100px; /* Location of the box */
+  position: fixed;
+  z-index: 3;
+  padding-top: 100px;
   left: 0;
   top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0,0,0);
+  background-color: rgba(0,0,0,0.4);
 }
 #errorDisplay{
   background-color: #fce4e4;
   border: 1px solid #fcc2c3;
   padding: 20px 30px;
-  width: 50%; /* Could be more or less, depending on screen size */
+  width: 50%;
   text-align: center;
-}
+}*/

@@ -1,6 +1,7 @@
+@import "https://bootswatch.com/4/flatly/bootstrap.min.css";
 /* HeroesComponent's private CSS styles */
 /* Application-wide Styles */
-h1 {
+/*h1 {
   color: #369;
   font-family: Arial, Helvetica, sans-serif;
   font-size: 250%;
@@ -22,6 +23,7 @@ body, input[type="text"], button {
   font-family: Cambria, Georgia;
   }
 /* everywhere else */
+/*
 * {
   font-family: Arial, Helvetica, sans-serif;
 }
@@ -31,21 +33,14 @@ body, input[type="text"], button {
 
 #tableContent{
   width: 100%;
-}
+}*/
 
 /*#inputForm {
   border-radius: 5px;
   background-color: #f2f2f2;
   width: 45%;
 }*/
-/*#dialog-popup {
-  display: none;
-  position: fixed;
-  bottom: 0;
-  right: 15px;
-  border: 3px solid #f1f1f1;
-  z-index: 9;
-}*/
+
 /* navigation bar */
 /*#routerLink{
   width: 20%;
@@ -57,6 +52,10 @@ body, input[type="text"], button {
   border-radius: 4px;
   cursor: pointer;
 }*/
+#wrapper {
+  width: 80%;
+  margin: 0 auto;
+}
 
 #routerLink{
   font-size: 100%;
@@ -89,17 +88,28 @@ body, input[type="text"], button {
   width: 100%;
   text-align: center;
 }
-.navigation button, h2 {
+.navigation button, h3 {
   display: inline-block;
 }
+
+h1{
+  color: #405061;
+  text-align: center;
+}
+
 /* table*/
+.thead{
+    color: white;
+    background-color: #405061;
+}
+/*
 .students {
   width: 100%;
   margin: 0 0 2em 0;
   list-style-type: none;
-  padding: 0;
- /* width: 30em;*/
+  padding: 0
 }
+
 .students td {
   cursor: pointer;
   position: relative;
@@ -121,34 +131,12 @@ body, input[type="text"], button {
   padding: .3em 0;
   height: 1.6em;
   border-radius: 4px;
-}
-/* inputForm*/
-
-input[type=text], [type=password] {
-   width: 100%;
-  padding: 12px 20px;
-  margin: 8px 0;
-  display: inline-block;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
-}
-
-button[type=submit] {
-  width: 100%;
-  background-color: #405061;
-  color: white;
-  padding: 14px 20px;
-  margin: 8px 0;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
+}*/
 
 /* delete-Dialog*/
-.dialog-popup{
+/*.dialog-popup{
   background-color: #fefefe;
-  margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
+  margin: 5% auto 15% auto;
   border: 1px solid #369;
   padding: 16px;
   width: 50%;
@@ -164,11 +152,13 @@ button[type=submit] {
   border-radius: 2px;
   cursor: pointer;
   padding: 5px;
+}*/
+.modal-content{
+    width: 40em;
 }
-
-.modal {
+.moda {
   position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
+  z-index: 9; /* Sit on top */
   padding-top: 100px; /* Location of the box */
   left: 0;
   top: 0;

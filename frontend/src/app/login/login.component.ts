@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import {LoginData} from '../loginData';
 import { TimesheetService } from '../timesheet.service';
 import { LoginService } from '../login.service';
+import { MessageService } from '../message.service';
 import { FormBuilder } from '@angular/forms';
 //import {SESSION_STORAGE, WebStorageService} from 'angular-webstorage-service';
 
@@ -16,9 +17,10 @@ export class LoginComponent implements OnInit {
 
   inputForm;
   loginData: LoginData;
-  inputShown: boolean= true;
+//  inputShown: boolean= true;
+  errorMessage: string= null;
 
-  constructor(private loginService: LoginService, private formBuilder: FormBuilder, private router: Router, private location: Location) {
+  constructor(private loginService: LoginService, private formBuilder: FormBuilder, private router: Router, private location: Location, private messageService: MessageService) {
     this.inputForm = this.formBuilder.group({
       loginUserName: '',
       password: ''
@@ -31,6 +33,13 @@ export class LoginComponent implements OnInit {
       console.log("res: "+res);
       sessionStorage.setItem('loginUserName', data.loginUserName);
       sessionStorage.setItem('password', data.password);
+      this.errorMessage= null;
+      this.messageService.message= "Login war erfolgreich";
+      this.messageService.setLoginDataExists(true);
+    /*  this.messageService.executeRequest.emit({
+          dataExists: true;
+      });*/
+ //     setTimeout((document.getElementById("success").style.display= "block"),5000);
       this.location.back();
 
       /*this.loginData=data;
@@ -39,13 +48,22 @@ export class LoginComponent implements OnInit {
       this.inputShown= false;*/
      // this.router.navigate(['/timesheets']);
       },err=> {
-        if (err.status>=400)alert(err.error);
+        if (err.status==500) {this.errorMessage= "Internal Server Error. Bitte prüfe die Proxy Konfiguration."; this.messageService.alertMessage=this.errorMessage}
+        else if (err.status>=400) {this.messageService.alertMessage= err.error;}
         this.inputForm.reset();
       });
+
   //  document.getElementById("loginInfo").innerText= "Sie sind angemeldet als "+data.loginUserName;
   }
 
     cancel(){
       this.location.back();
+    }
+
+    closeAlert() {
+      document.getElementById("alert").style.display= "none";
+    }
+    closeMessage(){
+      document.getElementById("success").style.display="none";
     }
 }

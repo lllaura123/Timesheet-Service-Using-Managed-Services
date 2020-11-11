@@ -13,7 +13,7 @@ import {map} from "rxjs/operators";
 })
 export class TimesheetService {
   loginData: LoginData;
-
+  message: string;
 
   constructor(private http: HttpClient) { }
 
@@ -37,14 +37,31 @@ export class TimesheetService {
        })});
   }
 
-  postNewStudent(studentData){
+  postNewStudent(studentData): Observable<string>{
      const body= new FormData();
      body.append('firstName', studentData.firstName);
      body.append('lastName', studentData.lastName);
      body.append('userName', studentData.userName);
      body.append('loginUserName', sessionStorage.getItem('loginUserName'));
      body.append('password', sessionStorage.getItem('password'));
-    return this.http.post<any>('https://localhost:8080/students', body);
+    return this.http.post('https://localhost:8080/students', body, {responseType: "text"});
+        /*    .subscribe(res=>{console.log(res) //this.messageService.message= res; console.log(res)
+            }, err=> { console.log(err.error);
+               if (err.status==0) {this.errorMessage="Connection refused";
+                  this.messageService.alertMessage= this.errorMessage;
+                  //document.getElementById("alert").style.display= "block";
+                  }
+               else if(err.status==500) {
+                  this.errorMessage= "Internal Server error. Es könnte ein Problem mit der Proxy Konfiguration sein.";
+                  this.messageService.alertMessage= this.errorMessage;
+                  //document.getElementById("alert").style.display= "block";
+                  }
+               else if (err.status>=400) {
+                  this.errorMessage= err.error;
+                  this.messageService.alertMessage= this.errorMessage;
+                 // document.getElementById("alert").style.display= "block";
+                  }}
+               );*/
   }
 
   deleteStudent(student: Student){

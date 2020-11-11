@@ -1,27 +1,40 @@
 <div id="inputForm">
+  <h3 i18n="inputHeader">Bitte geben Sie die Daten des Studenten ein:</h3>
   <form [formGroup]="inputForm">
-    <div>
-      <label>Vorname</label>
-      <input type="text" formControlName="firstName" placeholder="Vorname">
+    <div class="form-group">
+      <label i18n="firstName">Vorname</label>
+      <input i18n-placeholder type="text" class="form-control" id="firstName" formControlName="firstName"
+             placeholder="Vorname">
+    </div>
+    <div class="form-group">
+      <label i18n="lastName">Nachname</label>
+      <input i18n-placeholder type="text" class="form-control" id="lastName" formControlName="lastName"
+             placeholder="Nachname">
+    </div>
+    <div class="form-group">
+      <label i18n="jiraUserName"> Jira Username</label>
+      <input i18n-placeholder type="text" class="form-control" id="userName" formControlName="userName"
+             placeholder="Username">
     </div>
     <div>
-      <label>Nachname</label>
-      <input type="text" formControlName="lastName" placeholder="Nachname">
-    </div>
-    <div>
-      <label> Jira Username</label>
-      <input type="text" formControlName="userName" placeholder="Username">
-    </div>
-    <div>
-      <div class="button">
-        <button type="submit" (click)="submitStudentData(inputForm.value)">Absenden</button>
+      <div class="action">
+        <button i18n="submit" type="submit" class="btn btn-primary" (click)="submitStudentData(inputForm.value)">
+          Absenden
+        </button>
       </div>
-      <div class="button">
-        <button (click)="cancel()">Abbrechen</button>
+      <div class="action">
+        <button i18n="back" class="btn btn-primary" (click)="cancel()">Zurück</button>
       </div>
     </div>
   </form>
 </div>
+
+<!--<div class="alert alert-danger  fade show" id="alert" role="alert">
+  <strong>Error!</strong> {{errorMessage}}
+  <button type="button" class="close" (click)="close()" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>-->
 
 <!--<div *ngIf="showModal" id="errorModal">
   <div id="errorDisplay">

@@ -31,7 +31,7 @@ public class StudentRepository {
     private List<Student> students;
 
     /**
-     * Initialisiert students. Wenn CSV File namens student.csv im Verzeichnis existiert, werden die Einträge daraus gelesen, ansonsten wird Liste mit Default Werten angelegt.
+     * Initialises students. If csv File named student.csv exists, entries are loaded from file, else list with default values is created.
      */
     public StudentRepository() {
         this.csvFile = new File(pathName);
@@ -64,10 +64,10 @@ public class StudentRepository {
     }
 
     /**
-     * Sucht den Studenten in der Studentenliste, der den übergebenen Username hat
+     * Find student with requested username
      *
-     * @param userName Der Username, nach dem gesucht werden soll
-     * @return Gibt Optional von dem jeweiligem Studenten zurück oder leeres Optional wenn Username nicht gefunden wurde.
+     * @param userName requested username
+     * @return Empty Optional or Optional of student
      */
     public Optional<Student> getStudentWithUserName(String userName) {
         for (Student student : students) {
@@ -79,11 +79,11 @@ public class StudentRepository {
     }
 
     /**
-     * Fügt den übergebenen Studenten der Studentenliste hinzu und sortiert sie.
+     * Adds student to list and sorts list.
      *
-     * @param firstName Vorname des Studenten
-     * @param lastName  Nachname des Studenten
-     * @param userName  Username des Studenten
+     * @param firstName first name of the student
+     * @param lastName  last name of the student
+     * @param userName  username of the student
      */
     public void addStudent(String firstName, String lastName, String userName) {
         students.add(new Student(firstName, lastName, userName));
@@ -98,9 +98,9 @@ public class StudentRepository {
     }
 
     /**
-     * Löscht den übergebenen Studenten aus der Studentenliste.
+     * Deletes student from list.
      *
-     * @param student Der Student, der gelöscht werden soll
+     * @param student Student to be deleted
      */
     public void deleteStudent(Student student) {
         students.remove(student);

@@ -1,7 +1,7 @@
+@import "https://bootswatch.com/4/flatly/bootstrap.min.css";
 .loginContainer{
-  width: 45%;
+  width: 80%;
   padding: 10px;
-  border: 1px solid #369;
 }
 /*.loginContainer button{
   float: right;
@@ -14,7 +14,7 @@
   display: inline;
 }*/
 
-input[type=text], [type=password] {
+/*input[type=text], [type=password] {
   width: 100%;
   padding: 12px 20px;
   margin: 8px 0;
@@ -22,19 +22,19 @@ input[type=text], [type=password] {
   border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;
-}
-button, input[type=submit] {
-  width: 47%;
-  background-color: #405061;
+}*/
+.action button {
+  width: 49%;
+ /* background-color: #405061;
   color: white;
   padding: 14px 30px;
   margin: 13px 0;
   border: white;
   border-radius: 4px;
-  cursor: pointer;
+  cursor: pointer;*/
 
 }
 .action{
-  padding: 10px;
+  padding: 2px;
   display:inline;
 }

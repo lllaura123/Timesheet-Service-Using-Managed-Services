@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
+import { Location } from '@angular/common';
 import {LoginData} from './loginData';
 import { TimesheetService } from './timesheet.service';
+import { MessageService } from './message.service';
+import { LoginService } from './login.service';
 
 @Component({
   selector: 'app-root',
@@ -13,35 +16,29 @@ export class AppComponent {
   inputForm;
   loginData: LoginData;
   inputShown: boolean= true;
+*/
+  message: string;
+  alertMessage: string;
 
-  constructor(private timesheetService: TimesheetService, private formBuilder: FormBuilder) {
-    this.inputForm = this.formBuilder.group({
-      loginUserName: '',
-      password: ''
-    });
+  constructor(private timesheetService: TimesheetService, private messageService: MessageService) {
   }
-  onSubmit(data){
 
-    this.timesheetService.validateLogin(data).subscribe(res=> {
-      console.log("res: "+res);
-      this.timesheetService.loginData= data;
-      this.loginData=data;
-      this.inputForm.reset();
-      document.getElementById("loginInput").style.display="none";
-      this.inputShown= false;
+  getMessage():string{
+    return this.messageService.message;
+  }
+  getAlertMessage(): string{
 
-      },err=> {
-        if (err.status>=400)alert(err.error);
-        this.inputForm.reset();
-      });
-  //  document.getElementById("loginInfo").innerText= "Sie sind angemeldet als "+data.loginUserName;
+    return this.messageService.alertMessage;
   }
-  closeLoginInput(){
-    document.getElementById("loginInput").style.display="none";
-    this.inputShown=false;
+  closeMessage(){
+    document.getElementById("success").style.display="none";
+    this.messageService.message=null;
   }
-  openLoginInput(){
-    document.getElementById("loginInput").style.display="block";
-    this.inputShown= true;
-  }*/
+
+  closeAlert() {
+    document.getElementById("alert").style.display= "none";
+    this.messageService.alertMessage=null;
+  }
+
+
 }
