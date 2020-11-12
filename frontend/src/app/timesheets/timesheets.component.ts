@@ -69,7 +69,7 @@ export class TimesheetsComponent implements OnInit {
             .subscribe(responseData => {
               timesheet.fileExists= responseData.fileExists;
               console.log("Created File");
-              window.location.reload();
+              this.router.navigate(['/timesheets']);
             }, error => {
               if (error.status==0)this.messageService.alertMessage="Verbindung wurde abgelehnt";
               else if (error.status==500) this.messageService.alertMessage="500: Internal Servererror. Es könnte ein Problem mit der Proxy Konfiguration sein.";

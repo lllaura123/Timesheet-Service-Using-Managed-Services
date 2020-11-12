@@ -88,7 +88,7 @@
         </context-group>
         <note priority="1" from="description">userName</note>
       </trans-unit>
-      <trans-unit id="0466e24ba0bad5eab59dcec6b8c3f463011a4ef6" datatype="html">
+      <trans-unit id="030fe610eb9c5b2291571221bfe530ce2facd0eb" datatype="html">
         <source>Timesheet anzeigen</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/timesheets/timesheets.component.html</context>
@@ -96,7 +96,7 @@
         </context-group>
         <note priority="1" from="description">openTimesheet</note>
       </trans-unit>
-      <trans-unit id="f1359b208b9877fb72c4986af13d5bed78ce35c2" datatype="html">
+      <trans-unit id="3d4a22824df926b132e6870c78209d214c61eadd" datatype="html">
         <source>Student Löschen</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/timesheets/timesheets.component.html</context>
@@ -120,7 +120,7 @@
         </context-group>
         <note priority="1" from="description">deleteModalBody</note>
       </trans-unit>
-      <trans-unit id="af361af63b51834031177bb09037474abd26da06" datatype="html">
+      <trans-unit id="658596d007631c5ba0589e3350f3be27f7a1268a" datatype="html">
         <source>Nur Student</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/timesheets/timesheets.component.html</context>
@@ -128,7 +128,7 @@
         </context-group>
         <note priority="1" from="description">optionDeleteStudent</note>
       </trans-unit>
-      <trans-unit id="735eaf59682879f187639743ecb45313e0d17057" datatype="html">
+      <trans-unit id="cd4d5b02ee60ae8c6ae6d677a894b7612cc53a4a" datatype="html">
         <source>Student und alle seine Timesheets</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/timesheets/timesheets.component.html</context>
@@ -159,7 +159,7 @@
           <context context-type="linenumber">14</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="f504721f06d60b5f234278f84ffeb23086f292ba" datatype="html">
+      <trans-unit id="b6e9ce67bc2476a1d9d5ea84e8f791f393bce850" datatype="html">
         <source>Absenden</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/input/input.component.html</context>
