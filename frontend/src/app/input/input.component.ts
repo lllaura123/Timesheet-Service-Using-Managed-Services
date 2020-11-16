@@ -41,8 +41,8 @@ export class InputComponent implements OnInit {
           .subscribe(res=> {this.messageService.message= res;
           this.router.navigate(['/timesheets']);
           },err=>{
-            if (err.status==0) this.messageService.alertMessage="Verbindung zum Backend wurde abgelehnt";
-            else if(err.status==500) this.messageService.alertMessage="Internal Server Error. Es könnte ein Problem mit der Proxy Konfiguration geben.";
+            if (err.status==0) this.messageService.alertMessage=$localize`:@@connectionRefused:Verbindung wurde abgelehnt`;
+            else if(err.status==500) this.messageService.alertMessage=$localize`:@@serverError:500: Internal Servererror. Es könnte ein Problem mit der Proxy Konfiguration sein.`;
             else if(err.status>=400) this.messageService.alertMessage=err.error;
             this.inputForm.reset();
           });
@@ -54,8 +54,8 @@ export class InputComponent implements OnInit {
           .subscribe(res=> {this.messageService.message= res;
           this.router.navigate(['/timesheet']);
           },err=>{
-            if (err.status==0) this.messageService.alertMessage="Verbindung zum Backend wurde abgelehnt";
-            else if(err.status==500) this.messageService.alertMessage="Internal Server Error. Es könnte ein Problem mit der Proxy Konfiguration geben.";
+            if (err.status==0) this.messageService.alertMessage=$localize`:@@connectionRefused:Verbindung wurde abgelehnt`;
+            else if(err.status==500) this.messageService.alertMessage=$localize`:@@serverError:500: Internal Servererror. Es könnte ein Problem mit der Proxy Konfiguration sein.`;
             else if(err.status>=400) this.messageService.alertMessage=err.error;
         });
    //     }catch(err){

@@ -1,7 +1,7 @@
 @import "https://bootswatch.com/4/flatly/bootstrap.min.css";
 .loginContainer{
-  width: 80%;
-  padding: 10px;
+  width: 60%;
+  padding-top: 10px;
 }
 /*.loginContainer button{
   float: right;

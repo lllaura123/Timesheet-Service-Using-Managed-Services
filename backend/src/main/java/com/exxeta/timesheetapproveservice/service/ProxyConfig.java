@@ -1,7 +1,5 @@
 package com.exxeta.timesheetapproveservice.service;
 
-import org.springframework.stereotype.Service;
-
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -10,7 +8,6 @@ import java.nio.file.Paths;
 import java.util.Properties;
 
 
-@Service
 public class ProxyConfig {
 
     Properties properties = new Properties();

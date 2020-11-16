@@ -44,24 +44,7 @@ export class TimesheetService {
      body.append('userName', studentData.userName);
      body.append('loginUserName', sessionStorage.getItem('loginUserName'));
      body.append('password', sessionStorage.getItem('password'));
-    return this.http.post('https://localhost:8080/students', body, {responseType: "text"});
-        /*    .subscribe(res=>{console.log(res) //this.messageService.message= res; console.log(res)
-            }, err=> { console.log(err.error);
-               if (err.status==0) {this.errorMessage="Connection refused";
-                  this.messageService.alertMessage= this.errorMessage;
-                  //document.getElementById("alert").style.display= "block";
-                  }
-               else if(err.status==500) {
-                  this.errorMessage= "Internal Server error. Es könnte ein Problem mit der Proxy Konfiguration sein.";
-                  this.messageService.alertMessage= this.errorMessage;
-                  //document.getElementById("alert").style.display= "block";
-                  }
-               else if (err.status>=400) {
-                  this.errorMessage= err.error;
-                  this.messageService.alertMessage= this.errorMessage;
-                 // document.getElementById("alert").style.display= "block";
-                  }}
-               );*/
+    return this.http.post('https://localhost:8084/students', body, {responseType: "text"});
   }
 
   deleteStudent(student: Student){
@@ -72,30 +55,5 @@ export class TimesheetService {
     return this.http.delete('https://localhost:8080/timesheets/'+timesheet.student.userName+'/'+timesheet.year+'/'+ timesheet.month, {responseType: 'text'});
   }
 
-/*  validateLogin(loginData:LoginData){
-    const params:HttpParams= new HttpParams().set('loginUserName', loginData.loginUserName).set('password', loginData.password);
-    return this.http.get("https://localhost:8080/login", {responseType: 'text', params: params});
-  }
 
-  getStudents(date: string): Observable<Student[]>{
-    return this.http.get<Student[]>('https://localhost:8084/api/checklist',
-    {
-      params: new HttpParams().set('month', date)
-    });
-  }
-  createTimesheet(data): Observable<Student> {
-      return this.http.post<any>('https://localhost:8084/api/checklist/create', data);
-  }
-
-  openTimesheet(lastName:string, month: string){
-      return this.http.get('https://localhost:8084/api/checklist/open',
-       {
-         params: new HttpParams().set('month', month).set('lastName', lastName),
-         responseType: 'blob',
-         observe: 'response',
-         headers: new HttpHeaders({
-         'Access-Control-Allow-Origin': '*'
-       })});
-        }
-*/
 }

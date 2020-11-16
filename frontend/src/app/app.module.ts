@@ -11,6 +11,7 @@ import { TimesheetsComponent } from './timesheets/timesheets.component';
 import { InputComponent } from './input/input.component';
 import { AppRoutingModule } from './app-routing.module';
 import { LoginComponent } from './login/login.component';
+//import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,7 @@ import { LoginComponent } from './login/login.component';
     AppRoutingModule,
 //    StorageServiceModule
   ],
-  providers:  [ ],
+  providers:  [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

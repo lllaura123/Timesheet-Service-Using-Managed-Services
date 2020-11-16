@@ -54,7 +54,7 @@ export class TimesheetsComponent implements OnInit {
     this.timesheetService.getStudents(year, month)
       .subscribe(res=> {this.timesheets= res;
         }, error => {
-          if (error.status==0) this.messageService.alertMessage="Verbindung wurde abgelehnt";
+          if (error.status==0) this.messageService.alertMessage=$localize`:@@connectionRefused:Verbindung wurde abgelehnt`;
           });
   }
 
@@ -69,10 +69,10 @@ export class TimesheetsComponent implements OnInit {
             .subscribe(responseData => {
               timesheet.fileExists= responseData.fileExists;
               console.log("Created File");
-              this.router.navigate(['/timesheets']);
+              window.location.reload();
             }, error => {
-              if (error.status==0)this.messageService.alertMessage="Verbindung wurde abgelehnt";
-              else if (error.status==500) this.messageService.alertMessage="500: Internal Servererror. Es könnte ein Problem mit der Proxy Konfiguration sein.";
+              if (error.status==0)this.messageService.alertMessage=$localize`:@@connectionRefused:Verbindung wurde abgelehnt`;
+              else if (error.status==500) this.messageService.alertMessage=$localize`:@@serverError:500: Internal Servererror. Es könnte ein Problem mit der Proxy Konfiguration sein.`;
               else this.messageService.alertMessage=error.error;
             });
         }});
@@ -83,8 +83,8 @@ export class TimesheetsComponent implements OnInit {
           timesheet.fileExists= responseData.fileExists;
           console.log("Created File");
         }, error => {
-          if (error.status==0)this.messageService.alertMessage="Verbindung wurde abgelehnt";
-          else if (error.status==500) this.messageService.alertMessage="500: Internal Servererror. Es könnte ein Problem mit der Proxy Konfiguration sein.";
+          if (error.status==0)this.messageService.alertMessage=$localize`:@@connectionRefused:Verbindung wurde abgelehnt`;
+          else if (error.status==500) this.messageService.alertMessage=$localize`:@@serverError:500: Internal Servererror. Es könnte ein Problem mit der Proxy Konfiguration sein.`;
           else this.messageService.alertMessage=error.error;
         });
       }
@@ -108,7 +108,7 @@ export class TimesheetsComponent implements OnInit {
         window.URL.revokeObjectURL(url);
         a.remove(); // remove the element
       }, error => {
-         if (error.status==0) this.messageService.alertMessage="Verbindung zum Backend wurde abgelehnt";
+         if (error.status==0) this.messageService.alertMessage=$localize`:@@connectionRefused:Verbindung wurde abgelehnt`;
          else this.messageService.alertMessage= error.error;
       }, () => {
         console.log('Completed file download.')

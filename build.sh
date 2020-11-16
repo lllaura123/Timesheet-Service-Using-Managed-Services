@@ -6,6 +6,7 @@ echo "building frontend..."
 cd frontend
 npm install
 npm run build --localize
+cp -R -v dist/de/* dist/ && rm -rf dist/de
 
 echo "building backend..."
 cd ../backend

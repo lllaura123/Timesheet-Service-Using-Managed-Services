@@ -34,7 +34,7 @@ export class LoginComponent implements OnInit {
       sessionStorage.setItem('loginUserName', data.loginUserName);
       sessionStorage.setItem('password', data.password);
       this.errorMessage= null;
-      this.messageService.message= "Login war erfolgreich";
+      this.messageService.message= $localize`:@@loginSuccess:Login war erfolgreich`;
       this.messageService.setLoginDataExists(true);
     /*  this.messageService.executeRequest.emit({
           dataExists: true;
@@ -48,7 +48,7 @@ export class LoginComponent implements OnInit {
       this.inputShown= false;*/
      // this.router.navigate(['/timesheets']);
       },err=> {
-        if (err.status==500) {this.errorMessage= "Internal Server Error. Bitte prüfe die Proxy Konfiguration."; this.messageService.alertMessage=this.errorMessage}
+        if (err.status==500) {this.errorMessage= $localize`:@@serverError:500: Internal Servererror. Es könnte ein Problem mit der Proxy Konfiguration sein.`; this.messageService.alertMessage=this.errorMessage}
         else if (err.status>=400) {this.messageService.alertMessage= err.error;}
         this.inputForm.reset();
       });

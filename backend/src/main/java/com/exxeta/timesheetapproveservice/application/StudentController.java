@@ -1,8 +1,8 @@
 package com.exxeta.timesheetapproveservice.application;
 
+import com.exxeta.timesheetapproveservice.domain.Language;
 import com.exxeta.timesheetapproveservice.domain.Student;
 import com.exxeta.timesheetapproveservice.service.JiraRequest;
-import com.exxeta.timesheetapproveservice.service.ProxyConfig;
 import com.exxeta.timesheetapproveservice.service.StudentRepository;
 import com.exxeta.timesheetapproveservice.service.UsernameValidation;
 import io.swagger.v3.oas.annotations.Operation;
@@ -17,7 +17,6 @@ import javax.ws.rs.core.Response;
 import java.util.Base64;
 import java.util.Locale;
 import java.util.Optional;
-import java.util.ResourceBundle;
 
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 import static org.springframework.http.MediaType.TEXT_PLAIN;
@@ -31,13 +30,12 @@ public class StudentController {
     @Autowired
     private StudentRepository studentRepository;
 
-    @Autowired
-    private ProxyConfig proxyConfig;
+
 
     private JiraRequest jiraRequest = new JiraRequest();
 
     Locale locale = new Locale("en");
-    private ResourceBundle bundle = ResourceBundle.getBundle("bundle", locale);
+    // private ResourceBundle bundle= ResourceBundle.getBundle(Language.bundle, Language.locale);
 
     @Operation(summary = "Add student to list if username exists in Jira")
     @ApiResponses(value = {
@@ -51,17 +49,17 @@ public class StudentController {
     @PostMapping(consumes = MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity postStudent(@RequestParam String firstName, @RequestParam String lastName, @RequestParam String userName, @RequestParam String loginUserName, @RequestParam String password) {
         if ((firstName == null || firstName.isEmpty() || firstName.equals("null")) || (lastName == null || lastName.isEmpty() || lastName.equals("null")) || (userName == null || userName.isEmpty() || userName.equals("null"))) {
-            return ResponseEntity.status(Response.Status.BAD_REQUEST.getStatusCode()).contentType(TEXT_PLAIN).body(bundle.getString("statusBadRequest"));
+            return ResponseEntity.status(Response.Status.BAD_REQUEST.getStatusCode()).contentType(TEXT_PLAIN).body(Language.bundle.getString("statusBadRequest"));
         }
 
         final String ENCODEDCREDENTIALS = Base64.getEncoder().encodeToString((loginUserName + ":" + password).getBytes());
         UsernameValidation usernameValidation = new UsernameValidation(ENCODEDCREDENTIALS);
         boolean validated = usernameValidation.validateUserName(userName);
         if (!validated) {
-            return ResponseEntity.status(Response.Status.NOT_FOUND.getStatusCode()).contentType(TEXT_PLAIN).body(bundle.getString("statusUsernameNotInJira"));
+            return ResponseEntity.status(Response.Status.NOT_FOUND.getStatusCode()).contentType(TEXT_PLAIN).body(Language.bundle.getString("statusUsernameNotInJira"));
         }
         studentRepository.addStudent(firstName, lastName, userName);
-        return ResponseEntity.ok().contentType(TEXT_PLAIN).body(bundle.getString("statusStudentAddedOk"));
+        return ResponseEntity.ok().contentType(TEXT_PLAIN).body(Language.bundle.getString("statusStudentAddedOk"));
     }
 
     @Operation(summary = "Delete Student from list")
@@ -74,10 +72,10 @@ public class StudentController {
     public ResponseEntity deleteStudent(@PathVariable String userName) {
         Optional<Student> student = studentRepository.getStudentWithUserName(userName);
         if (!student.isPresent()) {
-            return ResponseEntity.status(Response.Status.BAD_REQUEST.getStatusCode()).contentType(TEXT_PLAIN).body(bundle.getString("statusUsernameNotInList"));
+            return ResponseEntity.status(Response.Status.BAD_REQUEST.getStatusCode()).contentType(TEXT_PLAIN).body(Language.bundle.getString("statusUsernameNotInList"));
         }
         studentRepository.deleteStudent(student.get());
-        return ResponseEntity.ok().contentType(TEXT_PLAIN).body(bundle.getString("statusStudentDelete"));
+        return ResponseEntity.ok().contentType(TEXT_PLAIN).body(Language.bundle.getString("statusStudentDeleted"));
     }
 
 

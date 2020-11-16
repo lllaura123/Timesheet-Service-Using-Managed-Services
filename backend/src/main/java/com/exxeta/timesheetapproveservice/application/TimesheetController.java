@@ -1,9 +1,9 @@
 package com.exxeta.timesheetapproveservice.application;
 
+import com.exxeta.timesheetapproveservice.domain.Language;
 import com.exxeta.timesheetapproveservice.domain.LoginData;
 import com.exxeta.timesheetapproveservice.domain.Student;
 import com.exxeta.timesheetapproveservice.domain.Timesheet;
-import com.exxeta.timesheetapproveservice.service.ProxyConfig;
 import com.exxeta.timesheetapproveservice.service.StudentRepository;
 import com.exxeta.timesheetapproveservice.service.TimesheetFileDownload;
 import com.exxeta.timesheetapproveservice.service.UsernameValidation;
@@ -22,7 +22,10 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.List;
+import java.util.Optional;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_OCTET_STREAM;
@@ -36,18 +39,13 @@ public class TimesheetController {
     @Autowired
     private StudentRepository studentRepository;
 
-    @Autowired
-    private ProxyConfig proxyConfig;
-
-    Locale locale = new Locale("en");
-    private ResourceBundle bundle = ResourceBundle.getBundle("bundle", locale);
 
     @Operation(summary = "Get list of timesheets")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "List is returned",
                     content = {@Content(mediaType = "application/json")})})
     @GetMapping("/{year}/{month}")
-    public List<Timesheet> getStudentlist(@PathVariable int year, @PathVariable int month) {
+    public List<Timesheet> getTimesheetList(@PathVariable int year, @PathVariable int month) {
         //studentList= new StudentList();
         List<Student> students = studentRepository.getStudents();
         List<Timesheet> timesheets = new ArrayList<>();
@@ -75,26 +73,26 @@ public class TimesheetController {
 
         Optional<Student> student = studentRepository.getStudentWithUserName(userName);
         if (!student.isPresent()) {
-            return ResponseEntity.badRequest().body(bundle.getString("statusUsernameNotInList"));
+            return ResponseEntity.badRequest().body(Language.bundle.getString("statusUsernameNotInList"));
         }
         Timesheet timesheet = new Timesheet(student.get(), year, month);
         final String ENCODEDCREDENTIALS = Base64.getEncoder().encodeToString((logindata.getLoginUserName() + ":" + logindata.getPassword()).getBytes());
 
         UsernameValidation usernameValidation = new UsernameValidation(ENCODEDCREDENTIALS);
         if (!usernameValidation.validateUserName(userName)) {
-            return ResponseEntity.status(Response.Status.NOT_FOUND.getStatusCode()).body(bundle.getString("statusUsernameNootInJira"));
+            return ResponseEntity.status(Response.Status.NOT_FOUND.getStatusCode()).body(Language.bundle.getString("statusUsernameNootInJira"));
         }
         TimesheetFileDownload timesheetCreation = new TimesheetFileDownload(ENCODEDCREDENTIALS, timesheet);
         int status = timesheetCreation.createTimesheetFile();
         if (status == Response.Status.UNAUTHORIZED.getStatusCode()) {
-            return ResponseEntity.status(Response.Status.UNAUTHORIZED.getStatusCode()).body(bundle.getString("statusUnauthorized"));
+            return ResponseEntity.status(Response.Status.UNAUTHORIZED.getStatusCode()).body(Language.bundle.getString("statusUnauthorized"));
         } else if (status == Response.Status.FORBIDDEN.getStatusCode()) {
-            return ResponseEntity.status(Response.Status.FORBIDDEN.getStatusCode()).body(bundle.getString("statusForbidden"));
+            return ResponseEntity.status(Response.Status.FORBIDDEN.getStatusCode()).body(Language.bundle.getString("statusForbidden"));
         } else if (status == 200) {
             return ResponseEntity.ok()
                     .body("{\"fileExists\": \"" + true + "\"}");
         } else {
-            return ResponseEntity.status(status).body(bundle.getString("statusRequestFail"));
+            return ResponseEntity.status(status).body(Language.bundle.getString("statusRequestFail"));
         }
     }
 
@@ -111,11 +109,11 @@ public class TimesheetController {
     public ResponseEntity openTimesheetFile(@PathVariable String userName, @PathVariable int year, @PathVariable int month) throws IOException {
         Optional<Student> student = studentRepository.getStudentWithUserName(userName);
         if (!student.isPresent()) {
-            return ResponseEntity.status(400).body(bundle.getString("statusUsernameNotInList"));
+            return ResponseEntity.status(400).body(Language.bundle.getString("statusUsernameNotInList"));
         }
         Timesheet timesheet = new Timesheet(student.get(), year, month);
         if (!Files.exists(Paths.get(timesheet.getFileName()))) {
-            return ResponseEntity.status(404).body(bundle.getString("statusFileNotFound"));
+            return ResponseEntity.status(404).body(Language.bundle.getString("statusFileNotFound"));
         }
         byte[] fileContent = Files.readAllBytes(Paths.get(timesheet.getFileName()));
         HttpHeaders headers = new HttpHeaders();
@@ -138,7 +136,7 @@ public class TimesheetController {
     public ResponseEntity deleteTimesheet(@PathVariable String userName, @PathVariable int year, @PathVariable int month) {
         Optional<Student> student = studentRepository.getStudentWithUserName(userName);
         if (!student.isPresent()) {
-            return ResponseEntity.badRequest().body(bundle.getString("statusUsernameNotInList"));
+            return ResponseEntity.badRequest().body(Language.bundle.getString("statusUsernameNotInList"));
         }
         studentRepository.deleteStudent(student.get());
         Timesheet timesheet = new Timesheet(student.get(), year, month);
@@ -148,7 +146,7 @@ public class TimesheetController {
                 f.delete();
             }
         }
-        return ResponseEntity.ok().body(bundle.getString("statusTimesheetDeleted"));
+        return ResponseEntity.ok().body(Language.bundle.getString("statusTimesheetDeleted"));
     }
 
 

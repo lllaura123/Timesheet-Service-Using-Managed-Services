@@ -50,6 +50,18 @@
         <source>Dezember</source>
         <target>December</target>
       </trans-unit>
+      <trans-unit id="connectionRefused">
+        <source>Verbindung abgelehnt</source>
+        <target>Connection refused</target>
+      </trans-unit>
+      <trans-unit id="serverError">
+        <source>500: Internal Servererror. Es könnte ein Problem mit der Proxy Konfiguration sein.</source>
+        <target>500: Internal Servererror. It might be a problem with the proxy configuration.</target>
+      </trans-unit>
+      <trans-unit id="loginSuccess">
+        <source>Login war erfolgreich</source>
+        <target>Login succeeded</target>
+      </trans-unit>
       <trans-unit id="8148550880729695161" datatype="html">
         <source>Bitte geben Sie die Daten des Studenten ein:</source>
         <target>Please enter the student data:</target>

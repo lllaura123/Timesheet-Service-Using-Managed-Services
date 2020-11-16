@@ -28,8 +28,11 @@
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
-<a href="/en/index.html">en</a>
-<a href="/de/index.html">de</a>
-<router-outlet></router-outlet>
-
+<div id="wrapper">
+  <div id="pageLinks">
+    <button (click)="openLink('/en/', 'en')">en</button>
+    <button (click)="openLink('/', 'de')">de</button>
+  </div>
+  <router-outlet></router-outlet>
+</div>
 

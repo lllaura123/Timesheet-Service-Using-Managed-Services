@@ -13,7 +13,7 @@
 
     <groupId>com.exxeta</groupId>
     <artifactId>timesheet-approve</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.2-SNAPSHOT</version>
 
     <name>Timesheet Approve Service</name>
     <description>This project can be used to create a new self contained system containing an Angular frontend and a

@@ -1,5 +1,16 @@
 @import "https://bootswatch.com/4/flatly/bootstrap.min.css";
 
+#wrapper {
+  width: 80%;
+  margin: 0 auto;
+}
+#pageLinks{
+  padding-top: 10px
+}
+#pageLinks button{
+  width: 4em
+}
+
 /* Application-wide Styles */
 /*h1 {
   color: #369;

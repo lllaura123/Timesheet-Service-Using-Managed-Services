@@ -38,6 +38,15 @@
       <trans-unit id="december">
         <source>Dezember</source>
       </trans-unit>
+      <trans-unit id="connectionRefused">
+        <source>Verbindung abgelehnt</source>
+      </trans-unit>
+      <trans-unit id="serverError">
+        <source>Verbindung abgelehnt</source>
+      </trans-unit>
+      <trans-unit id="loginSuccess">
+        <source>Verbindung abgelehnt</source>
+      </trans-unit>
       <trans-unit id="8148550880729695161" datatype="html">
         <source>Bitte geben Sie die Daten des Studenten ein:</source>
       </trans-unit>
