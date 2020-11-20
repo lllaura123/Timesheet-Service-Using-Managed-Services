@@ -6,6 +6,7 @@ import {LoginData} from './loginData';
 import { Observable, of } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams, HttpErrorResponse} from '@angular/common/http';
 import {map} from "rxjs/operators";
+import { Location } from '@angular/common';
 
 
 @Injectable({
@@ -14,21 +15,22 @@ import {map} from "rxjs/operators";
 export class TimesheetService {
   loginData: LoginData;
   message: string;
+  url: string= 'https://'+window.location.hostname+':8080/';
 
   constructor(private http: HttpClient) { }
 
 
   getStudents(year: number, month: number): Observable<Timesheet[]>{
-      return this.http.get<Timesheet[]>('https://localhost:8080/timesheets/'+year+"/"+month);
+      return this.http.get<Timesheet[]>(this.url+'timesheets/'+year+"/"+month);
   };
 
   createTimesheet(userName: string, year: number, month: number): Observable<Timesheet> {
-      return this.http.put<any>('https://localhost:8080/timesheets/'+userName+'/'+year+'/'+month,
+      return this.http.put<any>(this.url+'timesheets/'+userName+'/'+year+'/'+month,
         JSON.parse('{"loginUserName": "'+sessionStorage.getItem('loginUserName')+'", "password": "'+sessionStorage.getItem('password')+'"}'));
   }
 
   openTimesheet(userName: string, year: number, month: number){
-      return this.http.get('https://localhost:8080/timesheets/'+userName+'/'+year+'/'+month,
+      return this.http.get(this.url+'timesheets/'+userName+'/'+year+'/'+month,
        {
          responseType: 'blob',
          observe: 'response',
@@ -44,15 +46,15 @@ export class TimesheetService {
      body.append('userName', studentData.userName);
      body.append('loginUserName', sessionStorage.getItem('loginUserName'));
      body.append('password', sessionStorage.getItem('password'));
-    return this.http.post('https://localhost:8084/students', body, {responseType: "text"});
+    return this.http.post(this.url+'students', body, {responseType: "text"});
   }
 
   deleteStudent(student: Student){
-    return this.http.delete('https://localhost:8080/students/'+student.userName, {responseType: 'text'});
+    return this.http.delete(this.url+'students/'+student.userName, {responseType: 'text'});
   }
 
   deleteTimesheet(timesheet: Timesheet){
-    return this.http.delete('https://localhost:8080/timesheets/'+timesheet.student.userName+'/'+timesheet.year+'/'+ timesheet.month, {responseType: 'text'});
+    return this.http.delete(this.url+'timesheets/'+timesheet.student.userName+'/'+timesheet.year+'/'+ timesheet.month, {responseType: 'text'});
   }
 
 

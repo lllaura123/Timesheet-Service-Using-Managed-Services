@@ -9,11 +9,12 @@ import { HttpClient, HttpHeaders, HttpParams, HttpErrorResponse} from '@angular/
 })
 export class LoginService {
   loginData: LoginData;
+  url: string= 'https://'+window.location.hostname+':8080/login';
 
   constructor(private http: HttpClient) { }
 
   validateLogin(loginData:LoginData){
     const params:HttpParams= new HttpParams().set('loginUserName', loginData.loginUserName).set('password', loginData.password);
-    return this.http.get("https://localhost:8080/login", {responseType: 'text', params: params});
+    return this.http.get(this.url, {responseType: 'text', params: params});
   }
 }

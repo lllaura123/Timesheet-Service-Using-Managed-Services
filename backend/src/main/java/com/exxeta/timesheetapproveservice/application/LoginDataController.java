@@ -10,7 +10,6 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.util.Base64;
 
 import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
@@ -22,7 +21,14 @@ public class LoginDataController {
 
     private JiraRequest jiraRequest = new JiraRequest();
 
-
+    /**
+     * Check if login succeeds with passed credentials
+     *
+     * @param loginUserName Jira login username
+     * @param password      Jira password
+     * @return Responseentity.ok if login succeeds;
+     * Responseentity with status Unauthorized if login fails
+     */
     @Operation(summary = "Checks if logindata is valid.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Logindata is valid",
@@ -30,14 +36,13 @@ public class LoginDataController {
             @ApiResponse(responseCode = "401", description = "Login failed, logindata is not valid",
                     content = @Content(mediaType = "text/plain"))})
     @GetMapping
-    public ResponseEntity validateLoginData(@RequestParam String loginUserName, @RequestParam String password) throws IOException {
-        String jiraUrl = "https://jira.exxeta.com/secure/ManageRapidViews.jspa";
-
+    public ResponseEntity validateLoginData(@RequestParam String loginUserName, @RequestParam String password) {
+        final String jiraUrl = "https://jira.exxeta.com/secure/ManageRapidViews.jspa";
         final String ENCODEDCREDENTIALS = Base64.getEncoder().encodeToString((loginUserName + ":" + password).getBytes());
         CloseableHttpResponse response = jiraRequest.getResponse(ENCODEDCREDENTIALS, jiraUrl);
         if (response.getStatusLine().getStatusCode() == UNAUTHORIZED.getStatusCode()) {
             return ResponseEntity.status(UNAUTHORIZED.getStatusCode()).body(Language.bundle.getString("statusUnauthorized"));
         }
-        return ResponseEntity.ok("statusLoginOk");
+        return ResponseEntity.ok(Language.bundle.getString("statusLoginOk"));
     }
 }

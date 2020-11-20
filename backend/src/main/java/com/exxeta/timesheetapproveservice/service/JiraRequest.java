@@ -11,14 +11,13 @@ import java.io.IOException;
 public class JiraRequest {
 
     /**
-     * Executes Request to Jira
+     * Executes Request to Jira with passed credentials
      *
      * @param encoded encoded Jira Credentials
      * @param request Request to be executed
-     * @return Http Response
-     * @throws IOException
+     * @return Closable Http Response
      */
-    public CloseableHttpResponse getResponse(String encoded, String request) throws IOException {
+    public CloseableHttpResponse getResponse(String encoded, String request) {
         CloseableHttpClient httpClient = getHttpClient();
         CloseableHttpResponse response = executeHttpRequest(httpClient, request, encoded);
         return response;
@@ -33,12 +32,17 @@ public class JiraRequest {
                 .build();
     }
 
-    private CloseableHttpResponse executeHttpRequest(CloseableHttpClient httpClient, String request, String encoded) throws
-            IOException {
+    private CloseableHttpResponse executeHttpRequest(CloseableHttpClient httpClient, String request, String encoded) {
         HttpGet getRequest = new HttpGet(
                 request);
         getRequest.addHeader(HttpHeaders.AUTHORIZATION, "Basic " + encoded);
         getRequest.addHeader(HttpHeaders.CONTENT_TYPE, "application/json");
-        return httpClient.execute(getRequest);
+        try {
+            CloseableHttpResponse response = httpClient.execute(getRequest);
+            return response;
+        } catch (IOException e) {
+            throw new RuntimeException("Jira Request could not be executed", e);
+
+        }
     }
 }

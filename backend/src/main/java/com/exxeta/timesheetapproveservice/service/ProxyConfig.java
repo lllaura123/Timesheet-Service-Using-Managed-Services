@@ -1,5 +1,7 @@
 package com.exxeta.timesheetapproveservice.service;
 
+import com.exxeta.timesheetapproveservice.domain.ConfigEntry;
+
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;

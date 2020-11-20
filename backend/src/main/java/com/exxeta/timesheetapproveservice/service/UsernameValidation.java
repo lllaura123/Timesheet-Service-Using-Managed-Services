@@ -2,7 +2,9 @@ package com.exxeta.timesheetapproveservice.service;
 
 import org.apache.http.client.methods.CloseableHttpResponse;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class UsernameValidation {
     private String jiraUrl;
@@ -19,24 +21,19 @@ public class UsernameValidation {
     }
 
     /**
-     * Checks if username exists in Jira
+     * Make Jira Request and check if username exists
      *
      * @param userName username to be checked
-     * @return false if username not found else true
+     * @return true if username is found, else false
      */
     public boolean validateUserName(String userName) {
         jiraUrl = "https://jira.exxeta.com/issues/?jql=assignee%20in%20(" + userName + ")";
         try (CloseableHttpResponse response = jiraRequest.getResponse(encoded, jiraUrl);
-             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
-             FileWriter fileWriter = new FileWriter(new File("jiraResponse"))) {
+             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"))) {
             String line;
             String res = "";
-           /* while((line=bufferedReader.readLine())!=null){
-                fileWriter.write(line);
-            }*/
             while ((line = bufferedReader.readLine()) != null) {
                 res = res + line;
-                fileWriter.write(line);
                 if (res.contains("[&quot;Der Wert &#39;" + userName + "&#39; existiert nicht für das Feld &#39;assignee&#39;.&quot;]")) {
                     return false;
                 }

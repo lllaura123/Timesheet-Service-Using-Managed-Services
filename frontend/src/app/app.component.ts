@@ -42,7 +42,7 @@ export class AppComponent {
   }
   openLink(link: string, lang:string){
     this.languageService.putLanguage(lang).subscribe(res=>{console.log(res); location.href=link});
-    location.href=link;
+
   }
 
 

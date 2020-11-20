@@ -32,13 +32,12 @@ public class TimesheetFileDownload {
     }
 
     /**
-     * Executes Request to Jira Url and writes response content to .xls file
-     * Adds Description line in line 17
+     * Executes Request to Jira Url, writes response content to .xls file and adds Description line in line 17
      *
      * @return Response status
      * @throws IOException
      */
-    public int createTimesheetFile() throws IOException {
+    public int createTimesheetFile() {
         restApi = getJiraLink(timesheet.getStudent().getUserName(), LocalDate.of(timesheet.getYear(), timesheet.getMonth(), 1));
         CloseableHttpResponse response = jiraRequest.getResponse(encoded, restApi);
         copyToFile(response);

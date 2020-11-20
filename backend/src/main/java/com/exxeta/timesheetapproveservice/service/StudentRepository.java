@@ -67,7 +67,8 @@ public class StudentRepository {
      * Find student with requested username
      *
      * @param userName requested username
-     * @return Empty Optional or Optional of student
+     * @return Optional of student if found
+     * else empty optional
      */
     public Optional<Student> getStudentWithUserName(String userName) {
         for (Student student : students) {
@@ -79,7 +80,7 @@ public class StudentRepository {
     }
 
     /**
-     * Adds student to list and sorts list.
+     * Add student to list, sort list and write new studentlist to csv file.
      *
      * @param firstName first name of the student
      * @param lastName  last name of the student
@@ -98,7 +99,7 @@ public class StudentRepository {
     }
 
     /**
-     * Deletes student from list.
+     * Delete student from list and write new studentlist to csv file
      *
      * @param student Student to be deleted
      */

@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.ws.rs.core.Response;
 import java.util.Base64;
-import java.util.Locale;
 import java.util.Optional;
 
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
@@ -31,12 +30,21 @@ public class StudentController {
     private StudentRepository studentRepository;
 
 
-
     private JiraRequest jiraRequest = new JiraRequest();
 
-    Locale locale = new Locale("en");
-    // private ResourceBundle bundle= ResourceBundle.getBundle(Language.bundle, Language.locale);
 
+    /**
+     * Check if username exists in Jira and add student if it does
+     *
+     * @param firstName     First name of the student to be added
+     * @param lastName      Last name of the student to be added
+     * @param userName      Username of the student to be added
+     * @param loginUserName Jira credentials of caller
+     * @param password      Jira password of caller
+     * @return Responseentity.ok if student was added;
+     * else Responseentity with status Bad Request if Request Parameters are missing;
+     * else Responseentity with status Not Found if username doesn't exist in jira
+     */
     @Operation(summary = "Add student to list if username exists in Jira")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Student was added",
@@ -51,7 +59,6 @@ public class StudentController {
         if ((firstName == null || firstName.isEmpty() || firstName.equals("null")) || (lastName == null || lastName.isEmpty() || lastName.equals("null")) || (userName == null || userName.isEmpty() || userName.equals("null"))) {
             return ResponseEntity.status(Response.Status.BAD_REQUEST.getStatusCode()).contentType(TEXT_PLAIN).body(Language.bundle.getString("statusBadRequest"));
         }
-
         final String ENCODEDCREDENTIALS = Base64.getEncoder().encodeToString((loginUserName + ":" + password).getBytes());
         UsernameValidation usernameValidation = new UsernameValidation(ENCODEDCREDENTIALS);
         boolean validated = usernameValidation.validateUserName(userName);
@@ -62,6 +69,13 @@ public class StudentController {
         return ResponseEntity.ok().contentType(TEXT_PLAIN).body(Language.bundle.getString("statusStudentAddedOk"));
     }
 
+    /**
+     * Check if username exists in studentlist and delete student
+     *
+     * @param userName Username of the student to be deleted
+     * @return Responseentity.ok if student was deleted
+     * else Responseentity with status Bad Request if username was not found in list
+     */
     @Operation(summary = "Delete Student from list")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Student was deleted",

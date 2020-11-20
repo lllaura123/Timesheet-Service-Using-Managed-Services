@@ -1,4 +1,4 @@
-package com.exxeta.timesheetapproveservice.service;
+package com.exxeta.timesheetapproveservice.domain;
 
 public enum ConfigEntry {
     USE_PROXY("useProxy", "false"),
@@ -6,8 +6,8 @@ public enum ConfigEntry {
     HTTP_PROXY_PORT("http.proxyPort", "8080"),
     HTTPS_PROXY_HOST("https.proxyHost", "webproxy01.gisa.dmz"),
     HTTPS_PROXY_PORT("https.proxyPort", "8080");
-    protected String key;
-    protected String value;
+    public String key;
+    public String value;
 
     ConfigEntry(String key, String value) {
         this.key = key;
