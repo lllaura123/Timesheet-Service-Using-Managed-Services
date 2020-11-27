@@ -9,7 +9,7 @@ import { HttpClient, HttpHeaders, HttpParams, HttpErrorResponse} from '@angular/
 })
 export class LoginService {
   loginData: LoginData;
-  url: string= 'https://'+window.location.hostname+':8080/login';
+  url: string= 'https://s8y1udu0v9.execute-api.eu-central-1.amazonaws.com/default/login-check';
 
   constructor(private http: HttpClient) { }
 
