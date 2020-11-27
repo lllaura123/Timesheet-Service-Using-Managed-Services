@@ -4,6 +4,7 @@ import com.exxeta.timesheetapproveservice.domain.Language;
 import com.exxeta.timesheetapproveservice.domain.LoginData;
 import com.exxeta.timesheetapproveservice.domain.Student;
 import com.exxeta.timesheetapproveservice.domain.Timesheet;
+import com.exxeta.timesheetapproveservice.service.JiraRequest;
 import com.exxeta.timesheetapproveservice.service.StudentRepository;
 import com.exxeta.timesheetapproveservice.service.TimesheetFileDownload;
 import com.exxeta.timesheetapproveservice.service.UsernameValidation;
@@ -99,8 +100,8 @@ public class TimesheetController {
         Timesheet timesheet = new Timesheet(student.get(), year, month);
         final String ENCODEDCREDENTIALS = Base64.getEncoder().encodeToString((logindata.getLoginUserName() + ":" + logindata.getPassword()).getBytes());
 
-        UsernameValidation usernameValidation = new UsernameValidation(ENCODEDCREDENTIALS);
-        if (!usernameValidation.validateUserName(userName)) {
+        UsernameValidation usernameValidation = new UsernameValidation(new JiraRequest());
+        if (!usernameValidation.validateUserName(ENCODEDCREDENTIALS, userName)) {
             return ResponseEntity.status(Response.Status.NOT_FOUND.getStatusCode()).body(Language.bundle.getString("statusUsernameNootInJira"));
         }
         TimesheetFileDownload timesheetDownload = new TimesheetFileDownload(ENCODEDCREDENTIALS, timesheet);

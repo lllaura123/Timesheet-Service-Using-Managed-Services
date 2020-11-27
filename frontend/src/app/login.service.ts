@@ -15,6 +15,9 @@ export class LoginService {
 
   validateLogin(loginData:LoginData){
     const params:HttpParams= new HttpParams().set('loginUserName', loginData.loginUserName).set('password', loginData.password);
-    return this.http.get(this.url, {responseType: 'text', params: params});
+    return this.http.get(this.url,
+      {responseType: 'text',
+      params: params,
+});
   }
 }

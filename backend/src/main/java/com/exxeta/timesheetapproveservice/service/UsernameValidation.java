@@ -1,23 +1,27 @@
 package com.exxeta.timesheetapproveservice.service;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.http.client.methods.CloseableHttpResponse;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+@Getter
+@Setter
 public class UsernameValidation {
-    private String jiraUrl;
-    private String encoded;
-    private JiraRequest jiraRequest = new JiraRequest();
+
+    private JiraRequest jiraRequest;
 
     /**
      * Constructor UsernameValidation
      *
-     * @param credentials encoded Jira Credentials
+     * @param jiraRequest JiraRequest instance
      */
-    public UsernameValidation(String credentials) {
-        this.encoded = credentials;
+    public UsernameValidation(JiraRequest jiraRequest) {
+        this.jiraRequest = jiraRequest;
+
     }
 
     /**
@@ -26,15 +30,16 @@ public class UsernameValidation {
      * @param userName username to be checked
      * @return true if username is found, else false
      */
-    public boolean validateUserName(String userName) {
-        jiraUrl = "https://jira.exxeta.com/issues/?jql=assignee%20in%20(" + userName + ")";
-        try (CloseableHttpResponse response = jiraRequest.getResponse(encoded, jiraUrl);
+    public boolean validateUserName(String encodedCredentials, String userName) {
+        final String jiraUrl = "https://jira.exxeta.com/issues/?jql=assignee%20in%20(" + userName + ")";
+        String criticalLine = "[&quot;Der Wert &#39;" + userName + "&#39; existiert nicht für das Feld &#39;assignee&#39;.&quot;]";
+        try (CloseableHttpResponse response = jiraRequest.getResponse(encodedCredentials, jiraUrl);
              BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"))) {
             String line;
             String res = "";
             while ((line = bufferedReader.readLine()) != null) {
                 res = res + line;
-                if (res.contains("[&quot;Der Wert &#39;" + userName + "&#39; existiert nicht für das Feld &#39;assignee&#39;.&quot;]")) {
+                if (res.contains(criticalLine)) {
                     return false;
                 }
             }

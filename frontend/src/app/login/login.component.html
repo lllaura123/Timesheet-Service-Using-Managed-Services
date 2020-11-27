@@ -1,10 +1,4 @@
 <div class="loginContainer">
-  <!-- <div id="loginInfo">
-     <h3 *ngIf="(loginData==null)">Bitte erst Jira-Logindaten eingeben</h3>
-     <h3 *ngIf="loginData!=null">Angemeldet als {{loginData.loginUserName}}</h3>
-     <button *ngIf="inputShown"(click)="closeLoginInput()">Schließen</button>
-     <button *ngIf="!inputShown"(click)="openLoginInput()">Anmeldefeld öffnen</button>
-   </div>-->
   <div id="loginInput">
     <h3 i18n="loginHeader">Bitte die Jira-Logindaten eingeben</h3>
     <form [formGroup]="inputForm"><!--(ngSubmit)="submitLoginData(inputForm.value)">-->
@@ -24,11 +18,5 @@
   </div>
 
 </div>
-<!--
-<div  class="alert alert-danger alert-dismissible fade show" id="alert" role="alert">
-  <strong>Error!</strong> {{errorMessage}}
-  <button type="button" class="close" (click)="closeAlert()" aria-label="Close">
-    <span aria-hidden="true">&times;</span>
-  </button>
-</div>-->
+
 

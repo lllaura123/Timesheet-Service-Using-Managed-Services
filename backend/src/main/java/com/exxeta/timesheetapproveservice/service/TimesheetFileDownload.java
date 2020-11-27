@@ -1,11 +1,7 @@
 package com.exxeta.timesheetapproveservice.service;
 
 import com.exxeta.timesheetapproveservice.domain.Timesheet;
-import org.apache.http.HttpHeaders;
 import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -14,7 +10,7 @@ import java.time.temporal.TemporalAdjusters;
 
 
 public class TimesheetFileDownload {
-    private JiraRequest jiraRequest = new JiraRequest();
+    private JiraRequest jiraRequest;
     private String restApi;
     private String encoded;
     private Timesheet timesheet;
@@ -39,6 +35,7 @@ public class TimesheetFileDownload {
      */
     public int createTimesheetFile() {
         restApi = getJiraLink(timesheet.getStudent().getUserName(), LocalDate.of(timesheet.getYear(), timesheet.getMonth(), 1));
+        jiraRequest = new JiraRequest();
         CloseableHttpResponse response = jiraRequest.getResponse(encoded, restApi);
         copyToFile(response);
 
@@ -98,21 +95,4 @@ public class TimesheetFileDownload {
         return lastDayOfMonth;
     }
 
-    private CloseableHttpClient getHttpClient() {
-        PoolingManager ssl = new PoolingManager();
-        return HttpClients
-                .custom()
-                .useSystemProperties()
-                .setConnectionManager(ssl.createPoolingManager())
-                .build();
-    }
-
-    private CloseableHttpResponse executeHttpRequest(CloseableHttpClient httpClient, String request) throws
-            IOException {
-        HttpGet getRequest = new HttpGet(
-                request);
-        getRequest.addHeader(HttpHeaders.AUTHORIZATION, "Basic " + encoded);
-        getRequest.addHeader(HttpHeaders.CONTENT_TYPE, "application/json");
-        return httpClient.execute(getRequest);
-    }
 }

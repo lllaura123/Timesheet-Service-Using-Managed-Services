@@ -150,24 +150,6 @@ export class TimesheetsComponent implements OnInit {
   //  document.getElementById("loginInfo").innerText= "Sie sind angemeldet als "+data.loginUserName;
   }
 
- /*   async onDelete(timesheet: Timesheet){
-      if(confirm("Delete Student "+timesheet.student.firstName+ " "+timesheet.student.lastName +" and all corresponding files?")){
-          await this.timesheetService.deleteTimesheet(timesheet).toPromise()
-            .then(res => {
-              console.log("res: "+ res);
-            })
-            .catch(err => { alert(err.body)});
-      } else{
-        if(confirm("Only delete Student?")){
-          await this.timesheetService.deleteStudent(timesheet.student).toPromise()
-            .then(res => {
-              console.log("res:"+ res);
-            })
-            .catch(err => { alert(err.body)});
-        } else console.log("Cancel");
-      }
-      this.getStudents(this.date.getFullYear(), this.date.getMonth()+1);
-    }*/
 
   displayMonth(): string {;
     let monthNames= [$localize`:@@january:Januar`, $localize`:@@february:Februar`, $localize`:@@march:März`, $localize`:@@april:April`, $localize`:@@may:Mai`, $localize`:@@june:Juni`,

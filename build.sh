@@ -10,13 +10,13 @@ cp -R -v dist/de/* dist/ && rm -rf dist/de
 
 echo "building backend..."
 cd ../backend
-mvn clean compile
+mvn clean compile -DskipTests
 
 echo "package frontend in backend..."
 cp -R -v ../frontend/dist target/classes/static/
 
 echo "install service..."
-mvn install
+mvn install -DskipTests
 
 #echo "docker build..."
 #cd ..

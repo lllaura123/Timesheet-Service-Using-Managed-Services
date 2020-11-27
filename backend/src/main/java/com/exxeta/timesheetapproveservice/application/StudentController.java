@@ -9,6 +9,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,14 +25,18 @@ import static org.springframework.http.MediaType.TEXT_PLAIN;
 @CrossOrigin("http://localhost:4200")
 @RestController
 @RequestMapping("students")
-
+@Setter
+@Getter
 public class StudentController {
 
-    @Autowired
+
     private StudentRepository studentRepository;
+    private UsernameValidation usernameValidation;
 
-
-    private JiraRequest jiraRequest = new JiraRequest();
+    public StudentController(@Autowired StudentRepository studentRepository) {
+        this.usernameValidation = new UsernameValidation(new JiraRequest());
+        this.studentRepository = studentRepository;
+    }
 
 
     /**
@@ -60,9 +66,8 @@ public class StudentController {
             return ResponseEntity.status(Response.Status.BAD_REQUEST.getStatusCode()).contentType(TEXT_PLAIN).body(Language.bundle.getString("statusBadRequest"));
         }
         final String ENCODEDCREDENTIALS = Base64.getEncoder().encodeToString((loginUserName + ":" + password).getBytes());
-        UsernameValidation usernameValidation = new UsernameValidation(ENCODEDCREDENTIALS);
-        boolean validated = usernameValidation.validateUserName(userName);
-        if (!validated) {
+        boolean userNameExists = usernameValidation.validateUserName(ENCODEDCREDENTIALS, userName);
+        if (!userNameExists) {
             return ResponseEntity.status(Response.Status.NOT_FOUND.getStatusCode()).contentType(TEXT_PLAIN).body(Language.bundle.getString("statusUsernameNotInJira"));
         }
         studentRepository.addStudent(firstName, lastName, userName);

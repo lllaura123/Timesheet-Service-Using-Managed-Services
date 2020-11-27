@@ -19,7 +19,7 @@ import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
 @RequestMapping("login")
 public class LoginDataController {
 
-    private JiraRequest jiraRequest = new JiraRequest();
+    private JiraRequest jiraRequest;
 
     /**
      * Check if login succeeds with passed credentials
@@ -37,9 +37,10 @@ public class LoginDataController {
                     content = @Content(mediaType = "text/plain"))})
     @GetMapping
     public ResponseEntity validateLoginData(@RequestParam String loginUserName, @RequestParam String password) {
-        final String jiraUrl = "https://jira.exxeta.com/secure/ManageRapidViews.jspa";
+        final String JIRA_URL = "https://jira.exxeta.com/secure/ManageRapidViews.jspa";
         final String ENCODEDCREDENTIALS = Base64.getEncoder().encodeToString((loginUserName + ":" + password).getBytes());
-        CloseableHttpResponse response = jiraRequest.getResponse(ENCODEDCREDENTIALS, jiraUrl);
+        jiraRequest = new JiraRequest();
+        CloseableHttpResponse response = jiraRequest.getResponse(ENCODEDCREDENTIALS, JIRA_URL);
         if (response.getStatusLine().getStatusCode() == UNAUTHORIZED.getStatusCode()) {
             return ResponseEntity.status(UNAUTHORIZED.getStatusCode()).body(Language.bundle.getString("statusUnauthorized"));
         }

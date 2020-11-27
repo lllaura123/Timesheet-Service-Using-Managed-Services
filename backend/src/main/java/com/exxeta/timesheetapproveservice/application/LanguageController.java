@@ -14,7 +14,7 @@ import java.util.ResourceBundle;
 public class LanguageController {
 
     /**
-     * Sets locale to the passed language and changes Resource Bundle
+     * Set locale to the passed language and changes Resource Bundle
      *
      * @param lang Passed language
      * @return Responseentity.ok if Request succeeded
@@ -23,6 +23,7 @@ public class LanguageController {
     public ResponseEntity setLocale(@PathVariable String lang) {
         Language.locale = new Locale(lang);
         Language.bundle = ResourceBundle.getBundle(Language.bundleName, Language.locale);
+        System.out.println(Language.locale);
         return ResponseEntity.ok().body(Language.bundle.getString("statusOk"));
     }
 

@@ -1,10 +1,12 @@
 package com.exxeta.timesheetapproveservice.service;
 
 import com.exxeta.timesheetapproveservice.domain.Student;
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.io.File;
 import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
@@ -18,6 +20,12 @@ public class StudentRepositoryTest {
 
     private Student createStudent() {
         return new Student("firstName", "lastName", "userName");
+    }
+
+    @After
+    public void after() {
+        File file = new File(createStudentRepository().getPathName());
+        file.delete();
     }
 
     @Test
@@ -36,6 +44,7 @@ public class StudentRepositoryTest {
     public void testGetStudentWithUserNameWithExistingUsername() {
         StudentRepository studentRepository = createStudentRepository();
         Student testStudent = createStudent();
+        studentRepository.addStudent(testStudent.getFirstName(), testStudent.getLastName(), testStudent.getUserName());
         Optional<Student> optionalStudent = studentRepository.getStudentWithUserName(testStudent.getUserName());
         assertEquals(testStudent, optionalStudent.get());
     }
@@ -51,7 +60,7 @@ public class StudentRepositoryTest {
     public void deleteStudent() {
         StudentRepository studentRepository = createStudentRepository();
         Student testStudent = createStudent();
-        //studentRepository.addStudent(testStudent.getFirstName(), testStudent.getLastName(), testStudent.getUserName());
+        studentRepository.addStudent(testStudent.getFirstName(), testStudent.getLastName(), testStudent.getUserName());
         studentRepository.deleteStudent(testStudent);
         assertEquals(Optional.empty(), studentRepository.getStudentWithUserName(testStudent.getUserName()));
     }

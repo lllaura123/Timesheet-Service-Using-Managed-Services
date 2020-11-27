@@ -39,7 +39,6 @@ public class StudentRepository {
     }
 
     private void initializeStudents() {
-        System.out.println("aufgerufen");
         if (csvFile.isFile()) {
             getStudentsFromFile();
 
@@ -80,7 +79,7 @@ public class StudentRepository {
     }
 
     /**
-     * Add student to list, sort list and write new studentlist to csv file.
+     * Add student to list and sort list. Side effect: Write new student.csv file
      *
      * @param firstName first name of the student
      * @param lastName  last name of the student
