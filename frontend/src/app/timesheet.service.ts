@@ -24,19 +24,18 @@ export class TimesheetService {
       return this.http.get<Timesheet[]>(this.url+'timesheets/'+year+"/"+month);
   };
 
-  createTimesheet(userName: string, year: number, month: number): Observable<Timesheet> {
-      return this.http.put<any>(this.url+'timesheets/'+userName+'/'+year+'/'+month,
-        JSON.parse('{"loginUserName": "'+sessionStorage.getItem('loginUserName')+'", "password": "'+sessionStorage.getItem('password')+'"}'));
+  createTimesheet(userName: string, year: number, month: number): Observable<any> {
+      return this.http.put<any>('https://8yl0i8h71f.execute-api.eu-central-1.amazonaws.com/default/'+userName+'/'+year+'/'+month,
+        JSON.parse('{"loginUserName": "'+sessionStorage.getItem('loginUserName')+'", "password": "'+sessionStorage.getItem('password')+'"}'))//, {'Content-Type': 'application/json'});
   }
 
   openTimesheet(userName: string, year: number, month: number){
-      return this.http.get(this.url+'timesheets/'+userName+'/'+year+'/'+month,
+      return this.http.get('https://8yl0i8h71f.execute-api.eu-central-1.amazonaws.com/default/'+userName+'/'+year+'/'+month,
        {
          responseType: 'blob',
          observe: 'response',
-         headers: new HttpHeaders({
-         'Access-Control-Allow-Origin': '*'
-       })});
+         headers: {'Accept': 'application/octet-stream'}
+         });
   }
 
   postNewStudent(studentData): Observable<string>{

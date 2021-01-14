@@ -31,7 +31,7 @@ import java.util.Optional;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_OCTET_STREAM;
 
-//@CrossOrigin("http://localhost:4200")
+@CrossOrigin("http://localhost:4200")
 @RestController
 @RequestMapping("timesheets")
 
@@ -61,7 +61,7 @@ public class TimesheetController {
         for (Student student : students) {
             timesheets.add(new Timesheet(student, year, month));
         }
-        checkIfFileExists(timesheets, year, month);
+        //checkIfFileExists(timesheets, year, month);
         return timesheets;
     }
 

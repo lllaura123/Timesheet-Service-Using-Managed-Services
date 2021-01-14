@@ -7,7 +7,7 @@ public class Timesheet {
     private final Student student;
     private final int year;
     private final int month;
-    boolean fileExists;
+    boolean fileExists = false;
 
     /**
      * Setzt den Namen des Timesheetfiles zusammen

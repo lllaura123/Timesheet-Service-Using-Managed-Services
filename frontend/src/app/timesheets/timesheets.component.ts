@@ -69,7 +69,7 @@ export class TimesheetsComponent implements OnInit {
             .subscribe(responseData => {
               timesheet.fileExists= responseData.fileExists;
               console.log("Created File");
-              window.location.reload();
+              //window.location.reload();
             }, error => {
               if (error.status==0)this.messageService.alertMessage=$localize`:@@connectionRefused:Verbindung wurde abgelehnt`;
               else if (error.status==500) this.messageService.alertMessage=$localize`:@@serverError:500: Internal Servererror. Es könnte ein Problem mit der Proxy Konfiguration sein.`;
@@ -96,7 +96,7 @@ export class TimesheetsComponent implements OnInit {
      .subscribe(res => {
         var headers: HttpHeaders= res.headers;
         var filename= headers.get('fileName');
-        console.log('start download:',res);
+        console.log('start download for '+filename+':',res);
         var url = window.URL.createObjectURL(res.body);
         console.log(url);
         var a = document.createElement('a');

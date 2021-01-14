@@ -14,8 +14,8 @@ import static org.junit.Assert.assertEquals;
 @RunWith(MockitoJUnitRunner.class)
 public class StudentRepositoryTest {
 
-    private StudentRepository createStudentRepository() {
-        return new StudentRepository();
+    private StudentFileRepository createStudentRepository() {
+        return new StudentFileRepository();
     }
 
     private Student createStudent() {
