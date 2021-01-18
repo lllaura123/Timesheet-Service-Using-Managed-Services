@@ -36,11 +36,12 @@ import static org.springframework.http.MediaType.APPLICATION_OCTET_STREAM;
 @RequestMapping("timesheets")
 
 public class TimesheetController {
+    @Autowired
     StudentRepository studentRepository;
 
 
-    public TimesheetController(@Autowired StudentRepository studentRepository) {
-        this.studentRepository = studentRepository;
+    public TimesheetController() {
+        //this.studentRepository = new StudentDBRepository();
     }
 
     /**
@@ -102,7 +103,7 @@ public class TimesheetController {
 
         UsernameValidation usernameValidation = new UsernameValidation(new JiraRequest());
         if (!usernameValidation.validateUserName(ENCODEDCREDENTIALS, userName)) {
-            return ResponseEntity.status(Response.Status.NOT_FOUND.getStatusCode()).body(Language.bundle.getString("statusUsernameNootInJira"));
+            return ResponseEntity.status(Response.Status.NOT_FOUND.getStatusCode()).body(Language.bundle.getString("statusUsernameNotInJira"));
         }
         TimesheetFileDownload timesheetDownload = new TimesheetFileDownload(ENCODEDCREDENTIALS, timesheet);
         int status = timesheetDownload.createTimesheetFile();

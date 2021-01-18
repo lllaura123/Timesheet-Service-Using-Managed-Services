@@ -29,13 +29,13 @@ import static org.springframework.http.MediaType.TEXT_PLAIN;
 @Getter
 public class StudentController {
 
-
+    @Autowired
     private StudentRepository studentRepository;
     private UsernameValidation usernameValidation;
 
-    public StudentController(@Autowired StudentRepository studentRepository) {
+    public StudentController() {
         this.usernameValidation = new UsernameValidation(new JiraRequest());
-        this.studentRepository = studentRepository;
+        //this.studentRepository = new StudentDBRepository();
     }
 
 
