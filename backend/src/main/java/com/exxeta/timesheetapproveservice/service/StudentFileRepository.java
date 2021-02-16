@@ -3,11 +3,15 @@ package com.exxeta.timesheetapproveservice.service;
 import com.exxeta.timesheetapproveservice.domain.Student;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Repository;
 
 import java.io.*;
 import java.util.*;
 
-//@Repository
+
+@Repository
+@Profile({"dev", "default"})
 @Getter
 @Setter
 public class StudentFileRepository implements StudentRepository {

@@ -1,6 +1,8 @@
 package com.exxeta.timesheetapproveservice.service;
 
 import com.exxeta.timesheetapproveservice.domain.Student;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
@@ -10,10 +12,14 @@ import java.util.Optional;
 
 
 @Repository
+@Profile({"cloud", "local"})
 public class StudentDBRepository implements StudentRepository {
-    final String dbUrl = "jdbc:postgresql://localhost:5432/postgres";
-    final String dbUsername = "postgres";
-    final String dbPassword = "password";
+    @Value("${db.url}")
+    private String dbUrl;
+    @Value("${db.userName}")
+    private String dbUsername;
+    @Value("${db.password}")
+    private String dbPassword;
 
 
     @Override
@@ -21,10 +27,10 @@ public class StudentDBRepository implements StudentRepository {
         try (Connection con = DriverManager.getConnection(dbUrl, dbUsername, dbPassword);
         ) {
             Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM students WHERE username='" + userName + "'");
+            ResultSet rs = stmt.executeQuery("SELECT * FROM students WHERE userName='" + userName + "'");
             if (rs.next()) {
                 System.out.println(rs.getString("username"));
-                Student s = new Student(rs.getString("firstname"), rs.getString("lastname"), rs.getString("username"));
+                Student s = new Student(rs.getString("firstName"), rs.getString("lastName"), rs.getString("userName"));
                 return Optional.of(s);
             }
         } catch (SQLException e) {
@@ -35,13 +41,13 @@ public class StudentDBRepository implements StudentRepository {
 
     @Override
     public void addStudent(String firstName, String lastName, String userName) {
-        executeSqlUpdate("INSERT INTO students(username,firstname,lastname) VALUES('" + userName + "','" + firstName + "','" + lastName + "') " +
-                "ON CONFLICT(username) DO NOTHING");
+        executeSqlUpdate("INSERT INTO students(userName,firstName,lastName) VALUES('" + userName + "','" + firstName + "','" + lastName + "') " +
+                "ON CONFLICT(userName) DO NOTHING");
     }
 
     @Override
     public void deleteStudent(Student student) {
-        executeSqlUpdate("DELETE FROM students WHERE username='" + student.getUserName() + "'");
+        executeSqlUpdate("DELETE FROM students WHERE userName='" + student.getUserName() + "'");
     }
 
     @Override
@@ -51,7 +57,7 @@ public class StudentDBRepository implements StudentRepository {
              Statement stmt = con.createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM students")) {
             while (rs.next()) {
-                Student s = new Student(rs.getString("firstname"), rs.getString("lastname"), rs.getString("username"));
+                Student s = new Student(rs.getString("firstName"), rs.getString("lastName"), rs.getString("userName"));
                 studentList.add(s);
             }
         } catch (SQLException e) {
@@ -67,6 +73,8 @@ public class StudentDBRepository implements StudentRepository {
              Statement stmt = con.createStatement()) {
             stmt.executeUpdate(sql);
         } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

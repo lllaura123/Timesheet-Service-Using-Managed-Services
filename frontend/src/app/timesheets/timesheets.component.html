@@ -26,7 +26,7 @@
           <button (click)="createExcel(timesheet)">Download Timesheet</button>
         </td>
         <td>
-          <button i18n="openTimesheet" (click)="openExcel(timesheet)"><!--[disabled]="!timesheet.fileExists">-->
+          <button i18n="openTimesheet" (click)="openExcel(timesheet)" [disabled]="!timesheet.fileExists">
             Timesheet anzeigen
           </button>
         </td>

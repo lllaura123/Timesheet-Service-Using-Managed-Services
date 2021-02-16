@@ -1,5 +1,7 @@
 package com.exxeta.timesheetapproveservice.application;
 
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.exxeta.timesheetapproveservice.domain.Language;
 import com.exxeta.timesheetapproveservice.domain.LoginData;
 import com.exxeta.timesheetapproveservice.domain.Student;
@@ -38,6 +40,8 @@ import static org.springframework.http.MediaType.APPLICATION_OCTET_STREAM;
 public class TimesheetController {
     @Autowired
     StudentRepository studentRepository;
+    private final AmazonS3 s3 = AmazonS3ClientBuilder.standard().build();
+    private final String bucket_name = "timesheet-approve-bucket";
 
 
     public TimesheetController() {
@@ -62,7 +66,7 @@ public class TimesheetController {
         for (Student student : students) {
             timesheets.add(new Timesheet(student, year, month));
         }
-        //checkIfFileExists(timesheets, year, month);
+        checkIfFileExists(timesheets, year, month);
         return timesheets;
     }
 
@@ -198,9 +202,7 @@ public class TimesheetController {
 
     private void checkIfFileExists(List<Timesheet> timesheets, int year, int month) {
         for (Timesheet timesheet : timesheets) {
-            if (Files.exists(Paths.get(timesheet.getFileName()))) {
-                timesheet.setFileExists(true);
-            } else timesheet.setFileExists(false);
+            timesheet.setFileExists(s3.doesObjectExist(bucket_name, "Timesheets/" + timesheet.getFileName()));
         }
     }
 }
