@@ -30,7 +30,7 @@ public class ProxyConfig {
     }
 
     private void readConfigFile() {
-        if (Files.exists(Paths.get("config.properties"))) {
+        if (Files.exists(Paths.get(configFile))) {
             try (FileInputStream fileInputStream = new FileInputStream(configFile)) {
                 properties.load(fileInputStream);
             } catch (IOException e) {

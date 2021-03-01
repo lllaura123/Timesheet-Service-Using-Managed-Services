@@ -21,7 +21,7 @@ export class TimesheetService {
 
 
   getStudents(year: number, month: number): Observable<Timesheet[]>{
-      return this.http.get<Timesheet[]>(this.url+'timesheets/'+year+"/"+month);
+    return this.http.get<Timesheet[]>('https://qgm2xbvh9d.execute-api.eu-central-1.amazonaws.com/default/'+year+"/"+month);
   };
 
   createTimesheet(userName: string, year: number, month: number): Observable<any> {
@@ -39,21 +39,17 @@ export class TimesheetService {
   }
 
   postNewStudent(studentData): Observable<string>{
-     const body= new FormData();
-     body.append('firstName', studentData.firstName);
-     body.append('lastName', studentData.lastName);
-     body.append('userName', studentData.userName);
-     body.append('loginUserName', sessionStorage.getItem('loginUserName'));
-     body.append('password', sessionStorage.getItem('password'));
-    return this.http.post(this.url+'students', body, {responseType: "text"});
+     const body= JSON.parse('{"firstName": "'+studentData.firstName+'", "lastName": "'+studentData.lastName+'", "userName": "'+studentData.userName+'"}');
+     const params:HttpParams= new HttpParams().set('loginUserName', sessionStorage.getItem('loginUserName')).set('password', sessionStorage.getItem('password'));
+    return this.http.post("https://h4iq8owtoj.execute-api.eu-central-1.amazonaws.com/default", body, {responseType: "text", params: params});
   }
 
   deleteStudent(student: Student){
-    return this.http.delete(this.url+'students/'+student.userName, {responseType: 'text'});
+    return this.http.delete('https://h4iq8owtoj.execute-api.eu-central-1.amazonaws.com/default/'+student.userName, {responseType: 'text'});
   }
 
   deleteTimesheet(timesheet: Timesheet){
-    return this.http.delete(this.url+'timesheets/'+timesheet.student.userName+'/'+timesheet.year+'/'+ timesheet.month, {responseType: 'text'});
+    return this.http.delete('https://8yl0i8h71f.execute-api.eu-central-1.amazonaws.com/default/'+timesheet.student.userName, {responseType: 'text'});
   }
 
 

@@ -189,7 +189,6 @@ public class TimesheetController {
             return ResponseEntity.badRequest().body(Language.bundle.getString("statusUsernameNotInList"));
         }
         studentRepository.deleteStudent(student.get());
-        Timesheet timesheet = new Timesheet(student.get(), year, month);
         File directory = new File(".");
         for (File f : directory.listFiles()) {
             if (f.getName().startsWith("Timesheet_" + student.get().getLastName())) {

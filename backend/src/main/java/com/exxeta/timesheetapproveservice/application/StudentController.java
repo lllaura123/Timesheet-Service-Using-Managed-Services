@@ -19,7 +19,7 @@ import javax.ws.rs.core.Response;
 import java.util.Base64;
 import java.util.Optional;
 
-import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.TEXT_PLAIN;
 
 @CrossOrigin("http://localhost:4200")
@@ -42,9 +42,7 @@ public class StudentController {
     /**
      * Check if username exists in Jira and add student if it does
      *
-     * @param firstName     First name of the student to be added
-     * @param lastName      Last name of the student to be added
-     * @param userName      Username of the student to be added
+     * @param student       Student to be posted
      * @param loginUserName Jira credentials of caller
      * @param password      Jira password of caller
      * @return Responseentity.ok if student was added;
@@ -60,8 +58,11 @@ public class StudentController {
             @ApiResponse(responseCode = "404", description = "Username does not exist in Jira",
                     content = @Content(mediaType = "text/plain"))})
 
-    @PostMapping(consumes = MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity postStudent(@RequestParam String firstName, @RequestParam String lastName, @RequestParam String userName, @RequestParam String loginUserName, @RequestParam String password) {
+    @PostMapping(consumes = APPLICATION_JSON_VALUE)
+    public ResponseEntity postStudent(@RequestBody Student student, @RequestParam String loginUserName, @RequestParam String password) {
+        String firstName = student.getFirstName();
+        String lastName = student.getLastName();
+        String userName = student.getUserName();
         if ((firstName == null || firstName.isEmpty() || firstName.equals("null")) || (lastName == null || lastName.isEmpty() || lastName.equals("null")) || (userName == null || userName.isEmpty() || userName.equals("null"))) {
             return ResponseEntity.status(Response.Status.BAD_REQUEST.getStatusCode()).contentType(TEXT_PLAIN).body(Language.bundle.getString("statusBadRequest"));
         }
@@ -96,6 +97,5 @@ public class StudentController {
         studentRepository.deleteStudent(student.get());
         return ResponseEntity.ok().contentType(TEXT_PLAIN).body(Language.bundle.getString("statusStudentDeleted"));
     }
-
 
 }
