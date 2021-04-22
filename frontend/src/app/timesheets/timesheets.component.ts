@@ -8,7 +8,11 @@ import { HttpHeaders} from '@angular/common/http';
 import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import '@angular/localize/init'
+import Amplify, { Auth } from 'aws-amplify';
+//import AmplifyService from "../../node_modules/aws-amplify/lib-esm"
+import { AmplifyService } from 'aws-amplify-angular';
 //import {SESSION_STORAGE, WebStorageService} from 'angular-webstorage-service';
+import * as AWS from 'aws-sdk';
 
 @Component({
   selector: 'app-timesheets',
@@ -23,12 +27,16 @@ export class TimesheetsComponent implements OnInit {
   dialog: boolean= false;
   selectedTimesheet: Timesheet;
   loginData: LoginData;
+  group: string;
 
-  constructor(private timesheetService: TimesheetService, private formBuilder: FormBuilder, private router:Router, private messageService: MessageService) {
+
+  constructor(private timesheetService: TimesheetService, private formBuilder: FormBuilder, private router:Router, private messageService: MessageService, private amplifyService:AmplifyService) {
     this.inputForm = this.formBuilder.group({
       loginUserName: '',
       password: ''
     });
+
+    this.observeAuthStateChange(amplifyService);
   }
 
   ngOnInit(): void {
@@ -36,6 +44,7 @@ export class TimesheetsComponent implements OnInit {
     this.monthName= this.displayMonth();
     this.getStudents(this.date.getFullYear(), this.date.getMonth()+1);
     this.loginData=this.timesheetService.loginData;
+    this.group= sessionStorage.getItem("group");
   }
 
   getLastMonth() {
@@ -52,10 +61,12 @@ export class TimesheetsComponent implements OnInit {
 
   getStudents(year: number, month: number): void {
     this.timesheetService.getStudents(year, month)
-      .subscribe(res=> {this.timesheets= res;
+      .subscribe(res=> {
+          this.timesheets= res;
         }, error => {
           if (error.status==0) this.messageService.alertMessage=$localize`:@@connectionRefused:Verbindung wurde abgelehnt`;
           });
+
   }
 
   createExcel(timesheet: Timesheet){
@@ -123,6 +134,7 @@ export class TimesheetsComponent implements OnInit {
   async deleteStudent(){
     await this.timesheetService.deleteStudent(this.selectedTimesheet.student).toPromise()
       .then(res => { console.log(res);
+      this.deleteUserInCognito(this.selectedTimesheet.student.userName);
       })
       .catch(err => this.messageService.alertMessage=err.error);
       this.getStudents(this.date.getFullYear(), this.date.getMonth()+1);
@@ -132,6 +144,7 @@ export class TimesheetsComponent implements OnInit {
     await this.timesheetService.deleteTimesheet(this.selectedTimesheet).toPromise()
       .then(res => {
         console.log("res: "+ res);
+        this.deleteUserInCognito(this.selectedTimesheet.student.userName);
       })
       .catch(err => this.messageService.alertMessage= err.error);
       this.getStudents(this.date.getFullYear(), this.date.getMonth()+1);
@@ -143,12 +156,6 @@ export class TimesheetsComponent implements OnInit {
     this.selectedTimesheet= null;
   }
 
-  onSubmit(data){
-    this.timesheetService.loginData= data;
-    this.loginData=data;
-    this.inputForm.reset();
-  //  document.getElementById("loginInfo").innerText= "Sie sind angemeldet als "+data.loginUserName;
-  }
 
 
   displayMonth(): string {;
@@ -157,6 +164,77 @@ export class TimesheetsComponent implements OnInit {
 
     return monthNames[this.date.getMonth()]+" "+ this.date.getFullYear();
   }
+
+  observeAuthStateChange(amplifyService: AmplifyService){
+    this.amplifyService = amplifyService;
+    this.amplifyService.authStateChange$
+      .subscribe(authState => {
+        if (authState.state === 'signedIn') {
+          console.log("User logged in");
+          Auth.currentSession()
+           .then(data => {
+              this.group= data.getIdToken().payload['cognito:groups'][0];
+              sessionStorage.setItem("group", this.group);
+              if (this.group!="manager"){
+                (<HTMLInputElement> document.getElementById("routerLink")).disabled = true;
+                } else{
+                (<HTMLInputElement> document.getElementById("routerLink")).disabled = false;
+              }
+
+              })
+           .catch(err => console.log(err));
+        }
+
+      });
+  }
+
+    deleteUserInCognito(userName: string){
+      var params = {
+        UserPoolId: 'eu-central-1_8v7hXcYFi', /* required */
+        Username: userName /* required */
+      };
+
+      this.getCognitoIdentityServiceProvider().then(cognitoidentityserviceprovider=>{
+        cognitoidentityserviceprovider.adminDeleteUser(params, function(err, data) {
+          if (err) console.log(err, err.stack); // an error occurred
+          else     console.log(data);           // successful response
+        });
+      });
+    }
+
+    getCognitoIdentityServiceProvider(){
+      var AWS = require('aws-sdk');
+      var cognitoIdentityServiceProvider= this.getAWSCredentials().then(userCredentials=>{
+          AWS.config.update({credentials: userCredentials ,region: 'eu-central-1'});
+          var cognitoidentityserviceprovider = new AWS.CognitoIdentityServiceProvider();
+          return cognitoidentityserviceprovider;
+      });
+      return cognitoIdentityServiceProvider;
+    }
+
+    getAWSCredentials(){
+      var awsCredentials= this.getToken()
+        .then(value=>{
+           var myCredentials = new AWS.CognitoIdentityCredentials({
+              IdentityPoolId: 'eu-central-1:50b3eb91-f29d-4cdf-88af-e57d991a4670',
+              Logins: {
+                'cognito-idp.eu-central-1.amazonaws.com/eu-central-1_8v7hXcYFi': value
+              }
+            });
+            console.log(myCredentials);
+            return myCredentials;
+        });
+      return awsCredentials;
+
+    }
+
+    getToken(): Promise<string>{
+      var token= Auth.currentSession()
+       .then(data => {
+          return data.getIdToken().getJwtToken();
+        });
+        return token;
+    }
 
 
 

@@ -5,4 +5,5 @@ export interface Timesheet {
   year: number;
   month: number;
   fileExists: boolean;
+  isStudentView:boolean;
 }

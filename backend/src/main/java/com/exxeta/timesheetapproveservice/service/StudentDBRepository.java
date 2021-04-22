@@ -29,7 +29,6 @@ public class StudentDBRepository implements StudentRepository {
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM students WHERE userName='" + userName + "'");
             if (rs.next()) {
-                System.out.println(rs.getString("username"));
                 Student s = new Student(rs.getString("firstName"), rs.getString("lastName"), rs.getString("userName"));
                 return Optional.of(s);
             }

@@ -6,18 +6,21 @@
     <button class="arrow right" (click)="getNextMonth()"></button>
   </div>
   <nav>
-    <button i18n id="routerLink" routerLink="/input">Student hinzufügen</button>
+    <button i18n id="routerLink" routerLink="/input"> Student hinzufügen</button>
   </nav>
   <div id="tableContent">
     <table class="table table-striped">
-      <thead class="thead">
-      <th i18n="firstName">Vorname</th>
-      <th i18n="lastName">Nachname</th>
-      <th i18n="userName">UserName</th>
-      <th></th>
-      <th></th>
-      <th></th>
-      </thead>
+      <colgroup>
+        <col span="6">
+      </colgroup>
+      <tr class="thead">
+        <th i18n="firstName" scope="col">Vorname</th>
+        <th i18n="lastName" scope="col">Nachname</th>
+        <th i18n="userName" scope="col">UserName</th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+      </tr>
       <tr scope="row" *ngFor="let timesheet of timesheets">
         <td> {{timesheet.student.firstName}}</td>
         <td> {{timesheet.student.lastName}}</td>
@@ -31,7 +34,8 @@
           </button>
         </td>
         <td>
-          <button i18n="deleteStudent" (click)="showDialog(timesheet)" data-toggle="modal" data-target="#deleteModal">
+          <button id="deleteButton" [disabled]="group!='manager'" i18n="deleteStudent" (click)="showDialog(timesheet)"
+                  data-toggle="modal" data-target="#deleteModal">
             Student Löschen
           </button>
         </td>

@@ -15,6 +15,7 @@
   </form>
 </div>
 </div>-->
+
 <div *ngIf="getMessage()!==null" class="alert alert-success  fade show" id="success" role="alert">
   <strong>{{getMessage()}}</strong>
   <button type="button" class="close" (click)="closeMessage()" aria-label="Close">
@@ -28,11 +29,22 @@
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
-<div id="wrapper">
-  <div id="pageLinks">
-    <button (click)="openLink('/en/', 'en')">en</button>
-    <button (click)="openLink('/', 'de')">de</button>
-  </div>
-  <router-outlet></router-outlet>
-</div>
 
+<amplify-authenticator>
+  <amplify-sign-in hide-sign-up="true"
+                   header-text="Sign in with your credentials"
+                   slot="sign-in"
+  >
+    <div slot="federated-buttons"></div>
+  </amplify-sign-in>
+  <div>
+    <div id="wrapper">
+      <div id="pageLinks">
+        <button (click)="openLink('/en/', 'en')">en</button>
+        <button (click)="openLink('/', 'de')">de</button>
+      </div>
+      <router-outlet></router-outlet>
+    </div>
+    <amplify-sign-out></amplify-sign-out>
+  </div>
+</amplify-authenticator>
