@@ -21,17 +21,17 @@ export class TimesheetService {
 
 
   getStudents(year: number, month: number): Observable<Timesheet[]>{
-    //return this.http.get<Timesheet[]>('https:localhost:8080/timesheets/'+year+'/'+month);
-    return this.http.get<Timesheet[]>('https://qgm2xbvh9d.execute-api.eu-central-1.amazonaws.com/default/'+year+"/"+month);
+    return this.http.get<Timesheet[]>(this.url+'timesheets/'+year+'/'+month);
+    //return this.http.get<Timesheet[]>('https://qgm2xbvh9d.execute-api.eu-central-1.amazonaws.com/default/'+year+"/"+month);
   };
 
   createTimesheet(userName: string, year: number, month: number): Observable<any> {
-      return this.http.put<any>('https://8yl0i8h71f.execute-api.eu-central-1.amazonaws.com/default/'+userName+'/'+year+'/'+month,
+      return this.http.put<any>(this.url+'timesheets/'+userName+'/'+year+'/'+month,
         JSON.parse('{"loginUserName": "'+sessionStorage.getItem('loginUserName')+'", "password": "'+sessionStorage.getItem('password')+'"}'))//, {'Content-Type': 'application/json'});
   }
 
   openTimesheet(userName: string, year: number, month: number){
-      return this.http.get('https://8yl0i8h71f.execute-api.eu-central-1.amazonaws.com/default/'+userName+'/'+year+'/'+month,
+      return this.http.get(this.url+'timesheets/'+userName+'/'+year+'/'+month,
        {
          responseType: 'blob',
          observe: 'response',
@@ -42,17 +42,17 @@ export class TimesheetService {
   postNewStudent(studentData): Observable<string>{
      const body= JSON.parse('{"firstName": "'+studentData.firstName+'", "lastName": "'+studentData.lastName+'", "userName": "'+studentData.userName+'"}');
      const params:HttpParams= new HttpParams().set('loginUserName', sessionStorage.getItem('loginUserName')).set('password', sessionStorage.getItem('password'));
-    return this.http.post("https://h4iq8owtoj.execute-api.eu-central-1.amazonaws.com/default", body, {responseType: "text", params: params});
-    //return this.http.post("https:localhost:8080/students", body, {responseType: "text", params: params});
+    //return this.http.post("https://h4iq8owtoj.execute-api.eu-central-1.amazonaws.com/default", body, {responseType: "text", params: params});
+    return this.http.post(this.url+"students", body, {responseType: "text", params: params});
   }
 
   deleteStudent(student: Student){
-  //return this.http.delete("https://localhost:8080/students/"+student.userName, {responseType: 'text'});
-    return this.http.delete('https://h4iq8owtoj.execute-api.eu-central-1.amazonaws.com/default/'+student.userName, {responseType: 'text'});
+  return this.http.delete(this.url+"students/"+student.userName, {responseType: 'text'});
+    //return this.http.delete('https://h4iq8owtoj.execute-api.eu-central-1.amazonaws.com/default/'+student.userName, {responseType: 'text'});
   }
 
   deleteTimesheet(timesheet: Timesheet){
-    return this.http.delete('https://8yl0i8h71f.execute-api.eu-central-1.amazonaws.com/default/'+timesheet.student.userName, {responseType: 'text'});
+    return this.http.delete(this.url+'timesheets/'+timesheet.student.userName, {responseType: 'text'});
   }
 
   /*postUserInCognito(token: string){

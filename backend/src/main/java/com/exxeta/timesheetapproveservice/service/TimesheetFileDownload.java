@@ -1,5 +1,9 @@
 package com.exxeta.timesheetapproveservice.service;
 
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.exxeta.timesheetapproveservice.domain.Timesheet;
 import org.apache.http.client.methods.CloseableHttpResponse;
 
@@ -15,6 +19,9 @@ public class TimesheetFileDownload {
     private String encoded;
     private Timesheet timesheet;
     private final int criticalLine = 17;
+    final AmazonS3 s3 = AmazonS3ClientBuilder.standard().withRegion("eu-central-1").withPathStyleAccessEnabled(true).build();
+    private final String bucket_name = "timesheet-approve-bucket";
+    private String object_key;
 
     /**
      * Constructor for TimesheetFileDownload
@@ -25,6 +32,7 @@ public class TimesheetFileDownload {
     public TimesheetFileDownload(String ENCODED, Timesheet timesheet) {
         this.encoded = ENCODED;
         this.timesheet = timesheet;
+        object_key = "Timesheets/" + timesheet.getFileName();
     }
 
     /**
@@ -59,6 +67,11 @@ public class TimesheetFileDownload {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        PutObjectRequest request = new PutObjectRequest(bucket_name, object_key, outputFile);
+        ObjectMetadata meta = new ObjectMetadata();
+        meta.setContentType("application/octet-stream");
+        request.withMetadata(meta);
+        s3.putObject(request);
     }
 
     private String getMonthName(int month) {

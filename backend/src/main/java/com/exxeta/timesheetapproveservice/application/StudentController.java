@@ -22,7 +22,7 @@ import java.util.Optional;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.TEXT_PLAIN;
 
-@CrossOrigin("http://localhost:4200")
+
 @RestController
 @RequestMapping("students")
 @Setter

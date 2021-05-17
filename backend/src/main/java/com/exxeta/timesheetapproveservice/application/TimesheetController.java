@@ -1,5 +1,10 @@
 package com.exxeta.timesheetapproveservice.application;
 
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.model.ListObjectsRequest;
+import com.amazonaws.services.s3.model.ObjectListing;
+import com.amazonaws.services.s3.model.S3ObjectSummary;
 import com.exxeta.timesheetapproveservice.domain.Language;
 import com.exxeta.timesheetapproveservice.domain.LoginData;
 import com.exxeta.timesheetapproveservice.domain.Student;
@@ -19,7 +24,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.ws.rs.core.Response;
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -31,15 +35,15 @@ import java.util.Optional;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_OCTET_STREAM;
 
-@CrossOrigin("http://localhost:4200")
+
 @RestController
 @RequestMapping("timesheets")
 
 public class TimesheetController {
     @Autowired
     StudentRepository studentRepository;
-    //private final AmazonS3 s3 = AmazonS3ClientBuilder.standard().build();
-    //private final String bucket_name = "timesheet-approve-bucket";
+    final AmazonS3 s3 = AmazonS3ClientBuilder.standard().withRegion("eu-central-1").withPathStyleAccessEnabled(true).build();
+    private final String bucket_name = "timesheet-approve-bucket";
 
 
     public TimesheetController() {
@@ -169,8 +173,6 @@ public class TimesheetController {
      * Deletes Student and all their files
      *
      * @param userName Username of the student to be deleted
-     * @param year     year Year of the File to be deleted
-     * @param month    Month of the file to be deleted
      * @return Responseentity.ok if delete succeeded;
      * else Responseentity.badRequest if username not found in list
      */
@@ -180,26 +182,33 @@ public class TimesheetController {
                     content = @Content(mediaType = "text/plain")),
             @ApiResponse(responseCode = "400", description = "Username was not found in list",
                     content = @Content(mediaType = "text/plain"))})
-    @DeleteMapping(value = "/{userName}/{year}/{month}")
-    public ResponseEntity deleteTimesheet(@PathVariable String userName, @PathVariable int year, @PathVariable int month) {
+    @DeleteMapping(value = "/{userName}")
+    public ResponseEntity deleteTimesheets(@PathVariable String userName) {
         Optional<Student> student = studentRepository.getStudentWithUserName(userName);
         if (!student.isPresent()) {
             return ResponseEntity.badRequest().body(Language.bundle.getString("statusUsernameNotInList"));
         }
         studentRepository.deleteStudent(student.get());
-        File directory = new File(".");
-        for (File f : directory.listFiles()) {
-            if (f.getName().startsWith("Timesheet_" + student.get().getLastName())) {
-                f.delete();
-            }
-        }
+        deleteFilesInBucket(student.get());
         return ResponseEntity.ok().body(Language.bundle.getString("statusTimesheetDeleted"));
     }
 
 
     private void checkIfFileExists(List<Timesheet> timesheets, int year, int month) {
         for (Timesheet timesheet : timesheets) {
-            //timesheet.setFileExists(s3.doesObjectExist(bucket_name, "Timesheets/" + timesheet.getFileName()));
+            timesheet.setFileExists(s3.doesObjectExist(bucket_name, "Timesheets/" + timesheet.getFileName()));
+        }
+    }
+
+    private void deleteFilesInBucket(Student student) {
+        ListObjectsRequest listObjectsRequest = new ListObjectsRequest()
+                .withBucketName(bucket_name)
+                .withPrefix("Timesheets/Timesheet_" + student.getLastName());
+        ObjectListing objectListing = s3.listObjects(listObjectsRequest);
+        List<S3ObjectSummary> summaries = objectListing.getObjectSummaries();
+
+        for (S3ObjectSummary summary : summaries) {
+            s3.deleteObject(bucket_name, summary.getKey());
         }
     }
 }
