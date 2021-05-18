@@ -69,8 +69,8 @@ Amplify.configure({
             scope: ['email', 'openid'],
             //redirectSignIn: 'https://3.126.32.225:8080',
             //redirectSignOut: 'https://3.126.32.225:8080',
-            redirectSignIn: 'http://localhost:4200/',
-            redirectSignOut: 'http://localhost:4200',
+            redirectSignIn: 'https://ec2-3-66-184-101.eu-central-1.compute.amazonaws.com:8080/timesheets/',
+            redirectSignOut: 'https://ec2-3-66-184-101.eu-central-1.compute.amazonaws.com:8080/timesheets/',
             responseType: 'code' // or 'token', note that REFRESH token will only be generated when the responseType is code
         }
     }
