@@ -1,16 +1,6 @@
 package com.exxeta.timesheetapproveservice.service;
 
-import com.exxeta.timesheetapproveservice.domain.Student;
-import org.junit.After;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
-
-import java.io.File;
-import java.util.Optional;
-
-import static org.junit.Assert.assertEquals;
-
+/*
 @RunWith(MockitoJUnitRunner.class)
 public class StudentRepositoryTest {
 
@@ -64,4 +54,4 @@ public class StudentRepositoryTest {
         studentRepository.deleteStudent(testStudent);
         assertEquals(Optional.empty(), studentRepository.getStudentWithUserName(testStudent.getUserName()));
     }
-}
+}*/

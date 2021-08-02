@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.ws.rs.core.Response;
+import java.sql.SQLException;
 import java.util.Base64;
 import java.util.Optional;
 
@@ -90,7 +91,12 @@ public class StudentController {
                     content = @Content(mediaType = "text/plain"))})
     @DeleteMapping(value = "/{userName}")
     public ResponseEntity deleteStudent(@PathVariable String userName) {
-        Optional<Student> student = studentRepository.getStudentWithUserName(userName);
+        Optional<Student> student;
+        try {
+            student = studentRepository.getStudentWithUserName(userName);
+        } catch (SQLException e) {
+            return ResponseEntity.status(500).body("There was a problem with the database");
+        }
         if (!student.isPresent()) {
             return ResponseEntity.status(Response.Status.BAD_REQUEST.getStatusCode()).contentType(TEXT_PLAIN).body(Language.bundle.getString("statusUsernameNotInList"));
         }

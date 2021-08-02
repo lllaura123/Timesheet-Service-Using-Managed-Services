@@ -27,6 +27,7 @@ import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -99,8 +100,12 @@ public class TimesheetController {
                     content = @Content(mediaType = "text/plain")),})
     @PutMapping(value = "/{userName}/{year}/{month}", consumes = APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity createTimesheetFile(@PathVariable String userName, @PathVariable int year, @PathVariable int month, @RequestBody LoginData logindata) {
-
-        Optional<Student> student = studentRepository.getStudentWithUserName(userName);
+        Optional<Student> student;
+        try {
+            student = studentRepository.getStudentWithUserName(userName);
+        } catch (SQLException e) {
+            return ResponseEntity.status(500).body("There was a problem with the database");
+        }
         if (!student.isPresent()) {
             return ResponseEntity.badRequest().body(Language.bundle.getString("statusUsernameNotInList"));
         }
@@ -146,7 +151,12 @@ public class TimesheetController {
     })
     @GetMapping(value = "/{userName}/{year}/{month}")
     public ResponseEntity openTimesheetFile(@PathVariable String userName, @PathVariable int year, @PathVariable int month) {
-        Optional<Student> student = studentRepository.getStudentWithUserName(userName);
+        Optional<Student> student;
+        try {
+            student = studentRepository.getStudentWithUserName(userName);
+        } catch (SQLException e) {
+            return ResponseEntity.status(500).body("There was a problem with the database");
+        }
         if (!student.isPresent()) {
             return ResponseEntity.status(400).body(Language.bundle.getString("statusUsernameNotInList"));
         }
@@ -184,7 +194,12 @@ public class TimesheetController {
                     content = @Content(mediaType = "text/plain"))})
     @DeleteMapping(value = "/{userName}")
     public ResponseEntity deleteTimesheets(@PathVariable String userName) {
-        Optional<Student> student = studentRepository.getStudentWithUserName(userName);
+        Optional<Student> student;
+        try {
+            student = studentRepository.getStudentWithUserName(userName);
+        } catch (SQLException e) {
+            return ResponseEntity.status(500).body("There was a problem with the database");
+        }
         if (!student.isPresent()) {
             return ResponseEntity.badRequest().body(Language.bundle.getString("statusUsernameNotInList"));
         }

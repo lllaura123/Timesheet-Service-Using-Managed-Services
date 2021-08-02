@@ -23,7 +23,8 @@ public class StudentDBRepository implements StudentRepository {
 
 
     @Override
-    public Optional<Student> getStudentWithUserName(String userName) {
+    public Optional<Student> getStudentWithUserName(String userName) throws SQLException {
+        executeSqlUpdate("CREATE TABLE IF NOT EXISTS students (userName varchar(255) NOT NULL, firstName varchar(255), lastName varchar(255), PRIMARY KEY (userName))");
         try (Connection con = DriverManager.getConnection(dbUrl, dbUsername, dbPassword);
         ) {
             Statement stmt = con.createStatement();
@@ -33,15 +34,17 @@ public class StudentDBRepository implements StudentRepository {
                 return Optional.of(s);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw e;
         }
         return Optional.empty();
     }
 
     @Override
     public void addStudent(String firstName, String lastName, String userName) {
+        executeSqlUpdate("CREATE TABLE IF NOT EXISTS students (userName varchar(255) NOT NULL, firstName varchar(255), lastName varchar(255), PRIMARY KEY (userName))");
         executeSqlUpdate("INSERT INTO students(userName,firstName,lastName) VALUES('" + userName + "','" + firstName + "','" + lastName + "') " +
-                "ON CONFLICT(userName) DO NOTHING");
+                "ON CONFLICT(userName) DO UPDATE " +
+                "SET firstName= EXCLUDED.userName, lastName=EXCLUDED.lastName;");
     }
 
     @Override

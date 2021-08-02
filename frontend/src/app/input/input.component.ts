@@ -78,6 +78,7 @@ export class InputComponent implements OnInit {
   }
 
   async createUserInCognito(userName:string, studentEmail:string){
+    console.log("checkpoint");
     var params = {
       UserPoolId: 'eu-central-1_8v7hXcYFi', /* required */
       Username: userName, /* required */
@@ -86,17 +87,17 @@ export class InputComponent implements OnInit {
         /* more items */
       ],
       ForceAliasCreation: false,
-      MessageAction: "SUPPRESS",
+      //MessageAction: "RESEND",
       TemporaryPassword: 'Password2.',
       UserAttributes: [
         {
           Name: 'email', /* required */
           Value: studentEmail
         },
-        {
+        /*{
           Name: 'email_verified',
-          Value: 'true'
-        }
+          Value: 'False'
+        }/*
         /* more items */
       ]
     };

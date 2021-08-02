@@ -25,21 +25,6 @@ export class AppComponent {
 
   constructor(private timesheetService: TimesheetService, private messageService: MessageService, private languageService: LanguageService, private http: HttpClient) {
   }
-  /*ngOnInit(): void {
-    /*if(sessionStorage.getItem('awsToken')==null){
-      let params= new HttpParams();
-      params.append("response-type", "code");
-      params.append("client_id","217klo8d9echpdt5c99kp2qs8i");
-      params.append("redirect_uri", "http://localhost:4200/")
-      this.http.get("https://timesheet-approve-service.auth.eu-central-1.amazoncognito.com/oauth2/authorize",
-      {params: params, observe: 'response'}).subscribe(response=>{
-        console.log("Request success " +response.status);
-        let awsToken= "abc"
-        console.log(awsToken);
-        sessionStorage.setItem("awsToken", awsToken);
-      })
-    }
-  }*/
 
   getMessage():string{
     return this.messageService.message;
